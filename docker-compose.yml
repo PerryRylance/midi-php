@@ -1,0 +1,9 @@
+services:
+  php84:
+    container_name: php84
+    build:
+      context: .
+      args:
+        PHP_VERSION: '8.4'
+    volumes:
+      - .:/app
