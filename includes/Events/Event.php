@@ -2,7 +2,7 @@
 
 namespace PerryRylance\Midi\Events;
 
-class Event
+abstract class Event
 {
 
 }
