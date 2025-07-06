@@ -14,15 +14,15 @@ class ReadOnlyAccessor
 {
     use PropertyAccessors;
 
-    protected $_inaccessible = 321;
+    private $_inaccessible = 321;
 
     #[Getter]
-    protected $_value = 123;
+    private $_value = 123;
 
     #[Getter]
-    protected $_transforms = 111;
+    private $_transforms = 111;
 
-    protected function getTransforms(): int
+    private function getTransforms(): int
     {
         return $this->_transforms * 2;
     }
@@ -37,13 +37,13 @@ class ReadWriteAccessor
 
     #[Getter]
     #[Setter]
-    protected $_value = 123;
+    private $_value = 123;
 
     #[Getter]
     #[Setter]
-    protected $_transforms = 123;
+    private $_transforms = 123;
 
-    protected function setTransforms(int $value)
+    private function setTransforms(int $value)
     {
         $this->_transforms = $value * 3;
     }
