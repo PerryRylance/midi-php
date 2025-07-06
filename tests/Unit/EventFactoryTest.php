@@ -4,10 +4,16 @@ namespace Tests\Unit;
 
 use PerryRylance\Midi\Events\Event;
 use PerryRylance\Midi\Events\Factories\EventFactory;
+use PerryRylance\Midi\Events\Meta\TextEvent;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Streams\StatusBytes;
 use Tests\EventByteArrays;
 
+/**
+ * @template TEvent of Event
+ * @param array<int> $bytes
+ * @return TEvent
+ */
 function getEventFromByteArray(array $bytes): Event
 {
     $binary = pack('C*', ...$bytes);
@@ -18,6 +24,7 @@ function getEventFromByteArray(array $bytes): Event
 
 it("reads text event", function() {
 
+    /** @var TextEvent $event */
     $event = getEventFromByteArray(EventByteArrays::TEXT);
 
     expect($event)->toBeInstanceOf(TextEvent::class);
