@@ -46,22 +46,22 @@ class ReadStream extends Stream
 
     public function readByte(): int
     {
-        return $this->unpackAndAdvance('C');
+        return $this->unpackAndAdvance(Stream::FORMAT_BYTE);
     }
 
     public function readSignedByte(): int
     {
-        return $this->unpackAndAdvance('c');
+        return $this->unpackAndAdvance(Stream::FORMAT_SIGNED_BYTE);
     }
 
     public function readShort(): int
     {
-        return $this->unpackAndAdvance('n', 2);
+        return $this->unpackAndAdvance(Stream::FORMAT_SHORT, 2);
     }
 
     public function readUint(): int
     {
-        return $this->unpackAndAdvance('N', 4);
+        return $this->unpackAndAdvance(Stream::FORMAT_UINT, 4);
     }
 
     public function readVLV(): int
