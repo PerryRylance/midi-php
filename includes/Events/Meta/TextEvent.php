@@ -5,6 +5,8 @@ namespace PerryRylance\Midi\Events\Meta;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
 use LogicException;
+use PerryRylance\Midi\Streams\ReadStream;
+use PerryRylance\Midi\Traits\PropertyAccessors;
 use RangeException;
 
 /**
@@ -12,6 +14,8 @@ use RangeException;
  */
 class TextEvent extends MetaEvent
 {
+    use PropertyAccessors;
+
     #[Getter]
     #[Setter]
     private string $_text = "";
@@ -35,5 +39,16 @@ class TextEvent extends MetaEvent
 
         if(!preg_match('/^[\x00-\xFF]*$/', $value))
             throw new LogicException('One or more characters are not valid ASCII');
+    }
+
+    public function readBytes(ReadStream $stream): void
+    {
+        $buffer = "";
+        $length = $stream->readByte();
+
+        for($i = 0; $i < $length; $i++)
+            $buffer .= chr($stream->readByte());
+
+        $this->_text = $buffer;
     }
 }

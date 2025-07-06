@@ -22,10 +22,11 @@ class EventFactory
         
         switch($type)
         {
-            case EventType::META:
-                throw new LogicException("Not yet implemented");
+            case EventType::META->value:
+                $result = MetaEventFactory::fromStream($stream, $delta);
+                break;
 
-            case EventType::SYSEX:
+            case EventType::SYSEX->value:
                 throw new LogicException("Not yet implemented");
             
             default:
