@@ -2,32 +2,13 @@
 
 namespace PerryRylance\Midi\Streams;
 
-use RangeException;
+use PerryRylance\Midi\Traits\AssertsIntegerTypes;
 
 class WriteStream extends Stream
 {
+    use AssertsIntegerTypes;
+
     private string $buffer = "";
-
-    private function assertWithinRange(int $value, int $min, int $max): void
-    {
-        if($value < $min || $value > $max)
-            throw new RangeException();
-    }
-
-    private function assertByte(int $value): void
-    {
-        $this->assertWithinRange($value, 0, 0xFF);
-    }
-
-    private function assertShort(int $value): void
-    {
-        $this->assertWithinRange($value, 0, 0xFFFF);
-    }
-
-    private function assertUint(int $value): void
-    {
-        $this->assertWithinRange($value, 0, 0xFFFFFFFF);
-    }
 
     public function writeByte(int $value): void
     {

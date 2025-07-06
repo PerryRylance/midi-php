@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use PerryRylance\Midi\Streams\ReadStream;
+
 // TODO: Buffer strings
 class EventByteArrays
 {
@@ -40,8 +42,11 @@ class EventByteArrays
 	const INVALID_TEXT =				[0xFF, 0x01, 0x04, 0x42, 0x61, 0x73];
 	const INVALID_META_EVENT_TYPE =     [0xFF, 0x88, 0x01, 0x00];
 
-	// public static function toReadStream(array $bytes): ReadStream
-	// {
+	public static function toReadStream(array $bytes): ReadStream
+	{
+		$binary = pack('C*', ...$bytes);
+		$stream = new ReadStream($binary);
 
-	// }
+		return $stream;
+	}
 }
