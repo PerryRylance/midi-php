@@ -4,7 +4,9 @@ namespace Tests\Unit;
 
 use PerryRylance\Midi\Events\Event;
 use PerryRylance\Midi\Events\Factories\EventFactory;
+use PerryRylance\Midi\Events\Meta\CopyrightEvent;
 use PerryRylance\Midi\Events\Meta\TextEvent;
+use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Streams\StatusBytes;
 use Tests\EventByteArrays;
@@ -29,5 +31,22 @@ it("reads text event", function() {
 
     expect($event)->toBeInstanceOf(TextEvent::class);
     expect($event->text)->toBe("Bass");
+
+});
+
+it("throws on bad text event", function() {
+
+    getEventFromByteArray(EventByteArrays::INVALID_TEXT);
+
+})
+    ->throws(ParseException::class);
+
+it("reads copyright event", function() {
+
+    /** @var CopyrightEvent $event */
+    $event = getEventFromByteArray(EventByteArrays::COPYRIGHT);
+
+    expect($event)->toBeInstanceOf(CopyrightEvent::class);
+    expect($event->text)->toBe("\xA9 2009 Kaliopa Publishing, LLC");
 
 });

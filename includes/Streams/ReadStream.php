@@ -25,7 +25,7 @@ class ReadStream extends Stream
             throw new RangeException("Position cannot be negative");
 
         if($this->position >= $this->getLength() - $offset)
-            throw new RangeException("Unexpected end of stream");
+            throw new ParseException("Unexpected end of stream");
     }
 
     private function unpackAndAdvance(string $format, int $size = 1)

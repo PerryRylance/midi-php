@@ -18,21 +18,21 @@ class TextEvent extends MetaEvent
 
     #[Getter]
     #[Setter]
-    private string $_text = "";
+    protected string $_text = "";
 
     protected function getMetaType(): MetaEventType
     {
         return MetaEventType::TEXT;
     }
 
-    private function setText($value)
+    protected function setText($value)
     {
         $this->assertValidText($value);
 
         $this->_text = $value;
     }
 
-    private function assertValidText(string $value): void
+    protected function assertValidText(string $value): void
     {
         if(strlen($value) > 255)
             throw new RangeException('Text too long');

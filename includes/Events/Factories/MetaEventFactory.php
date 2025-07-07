@@ -2,6 +2,7 @@
 
 namespace PerryRylance\Midi\Events\Factories;
 
+use PerryRylance\Midi\Events\Meta\CopyrightEvent;
 use PerryRylance\Midi\Events\Meta\MetaEvent;
 use PerryRylance\Midi\Events\Meta\MetaEventType;
 use PerryRylance\Midi\Events\Meta\TextEvent;
@@ -20,6 +21,10 @@ class MetaEventFactory
                 $result = new TextEvent();
                 break;
             
+            case MetaEventType::COPYRIGHT:
+                $result = new CopyrightEvent();
+                break;
+
             default:
                 throw new ParseException("Invalid meta event type 0x" . dechex($type->value));
         }
