@@ -6,9 +6,11 @@ use PerryRylance\Midi\Events\Event;
 use PerryRylance\Midi\Events\Factories\EventFactory;
 use PerryRylance\Midi\Events\Meta\CopyrightEvent;
 use PerryRylance\Midi\Events\Meta\CuePointEvent;
+use PerryRylance\Midi\Events\Meta\FrameRate;
 use PerryRylance\Midi\Events\Meta\InstrumentNameEvent;
 use PerryRylance\Midi\Events\Meta\MarkerEvent;
 use PerryRylance\Midi\Events\Meta\SetTempoEvent;
+use PerryRylance\Midi\Events\Meta\SmtpeOffsetEvent;
 use PerryRylance\Midi\Events\Meta\TextEvent;
 use PerryRylance\Midi\Events\Meta\TrackNameEvent;
 use PerryRylance\Midi\Exceptions\ParseException;
@@ -103,5 +105,20 @@ it("reads set tempo event", function() {
 
     expect($event)->toBeInstanceOf(SetTempoEvent::class);
     expect($event->bpm)->toBe(120);
+
+});
+
+it("reads smtpe offset event", function() {
+
+    /** @var SmtpeOffsetEvent $event */
+    $event = getEventFromByteArray(EventByteArrays::SMTPE_OFFSET);
+
+    expect($event)->toBeInstanceOf(SmtpeOffsetEvent::class);
+    expect($event->rate)->toBe(FrameRate::FPS_24);
+    expect($event->hours)->toBe(1);
+    expect($event->minutes)->toBe(0);
+    expect($event->seconds)->toBe(0);
+    expect($event->frames)->toBe(0);
+    expect($event->subframes)->toBe(0);
 
 });
