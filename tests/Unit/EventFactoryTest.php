@@ -8,6 +8,7 @@ use PerryRylance\Midi\Events\Meta\CopyrightEvent;
 use PerryRylance\Midi\Events\Meta\CuePointEvent;
 use PerryRylance\Midi\Events\Meta\InstrumentNameEvent;
 use PerryRylance\Midi\Events\Meta\MarkerEvent;
+use PerryRylance\Midi\Events\Meta\SetTempoEvent;
 use PerryRylance\Midi\Events\Meta\TextEvent;
 use PerryRylance\Midi\Events\Meta\TrackNameEvent;
 use PerryRylance\Midi\Exceptions\ParseException;
@@ -95,9 +96,12 @@ it("reads cue point event", function() {
 
 });
 
-// it("reads set tempo event", function() {
+it("reads set tempo event", function() {
 
-//     /** @var SetTempoEvent $event */
-//     $event = getEventFromByteArray()
+    /** @var SetTempoEvent $event */
+    $event = getEventFromByteArray(EventByteArrays::SET_TEMPO);
 
-// });
+    expect($event)->toBeInstanceOf(SetTempoEvent::class);
+    expect($event->bpm)->toBe(120);
+
+});

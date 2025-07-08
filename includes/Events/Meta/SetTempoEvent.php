@@ -2,11 +2,13 @@
 
 namespace PerryRylance\Midi\Events\Meta;
 
+use InvalidArgumentException;
+use LogicException;
 use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Traits\PropertyAccessors;
-use PerryRylance\Midi\Attributes\Getter;
-use PerryRylance\Midi\Attributes\Setter;
+use PerryRylance\Midi\Attributes\Property;
+use RangeException;
 
 class SetTempoEvent extends MetaEvent
 {
@@ -18,9 +20,24 @@ class SetTempoEvent extends MetaEvent
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->mspqn = 120 * self::MICROSECOND_PER_MINUTE;
+    }
+
+    #[Property("bpm")]
+    protected function getBpm()
+    {
+        return self::MICROSECOND_PER_MINUTE / $this->mspqn;
+    }
+
+    #[Property("bpm")]
+    protected function setBpm(int | float $value)
+    {
+        $mspqn = round(self::MICROSECOND_PER_MINUTE / $value);
+
+        if($mspqn <= 0 || $mspqn > 0xFFFFFF)
+            throw new RangeException("Calculated MSPQN out of range");
+
+        $this->mspqn = $mspqn;
     }
 
     public function readBytes(ReadStream $stream): void

@@ -9,6 +9,7 @@ use PerryRylance\Midi\Events\Meta\LyricEvent;
 use PerryRylance\Midi\Events\Meta\MarkerEvent;
 use PerryRylance\Midi\Events\Meta\MetaEvent;
 use PerryRylance\Midi\Events\Meta\MetaEventType;
+use PerryRylance\Midi\Events\Meta\SetTempoEvent;
 use PerryRylance\Midi\Events\Meta\TextEvent;
 use PerryRylance\Midi\Events\Meta\TrackNameEvent;
 use PerryRylance\Midi\Exceptions\ParseException;
@@ -28,6 +29,7 @@ class MetaEventFactory
             MetaEventType::LYRIC => new LyricEvent,
             MetaEventType::MARKER => new MarkerEvent,
             MetaEventType::CUE_POINT => new CuePointEvent,
+            MetaEventType::SET_TEMPO => new SetTempoEvent,
             default => throw new ParseException("Invalid meta event type 0x" . dechex($type->value))
         };
 
