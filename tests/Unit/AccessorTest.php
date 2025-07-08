@@ -59,6 +59,11 @@ class AliasedAccessor
 
     private $_internal = 54321;
 
+    public function getRawInternal(): int
+    {
+        return $this->_internal;
+    }
+
     #[Property("external")]
     protected function getInternal()
     {
@@ -70,6 +75,24 @@ class AliasedAccessor
     {
         $this->_internal = $value + 999;
     }
+
+    #[Property("ambiguous")]
+    protected function getFirstAmbiguous()
+    {
+        return 0;
+    }
+
+    #[Property("ambiguous")]
+    protected function getSecondAmbiguous()
+    {
+        return 0;
+    }
+
+    #[Property("ambiguous")]
+    protected function setFirstAmbiguous() {}
+
+    #[Property("ambiguous")]
+    protected function setSecondAmbiguous() {}
 }
 
 it('reads correct value', function() {
@@ -125,4 +148,27 @@ it('reads aliased value', function() {
 
 });
 
-// Throws on ambiguous aliased property
+it('throws on reading ambiguous property alias', function() {
+
+    $instance = new AliasedAccessor;
+    $instance->ambiguous;
+
+})
+    ->throws(LogicException::class);
+
+it('writes aliased value', function() {
+
+    $instance = new AliasedAccessor;
+    $instance->external = 1;
+
+    expect($instance->getRawInternal())->toBe(1000);
+
+});
+
+it('throws on writing ambiguous property alias', function() {
+
+    $instance = new AliasedAccessor;
+    $instance->ambiguous = "test";
+
+})
+    ->throws(LogicException::class);

@@ -6,6 +6,7 @@ use LogicException;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Property;
 use PerryRylance\Midi\Attributes\Setter;
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -45,21 +46,43 @@ trait PropertyAccessors
         return $this->hasMethod("set$property");
     }
 
+    private function getAliasedMethod(string $getOrSet, $property): ?ReflectionMethod
+    {
+        if(!match($getOrSet) {
+            'get' => true,
+            'set' => true,
+            default => false
+        })
+            throw new LogicException();
+        
+        $regex = "/^$getOrSet/";
+        $reflect = new ReflectionClass($this);
+
+        $methods = array_values(array_filter($reflect->getMethods(), function(ReflectionMethod $method) use ($regex, $property) {
+
+            if(!preg_match($regex, $method->name))
+                return false;
+
+            $attributes = array_filter($method->getAttributes(Property::class), fn(ReflectionAttribute $attribute) => $attribute->newInstance()->alias === $property);
+
+            return !empty($attributes);
+
+        }));
+
+        if(empty($methods))
+            return null;
+
+        if(count($methods) > 1)
+            throw new LogicException("Ambiguous property attribute");
+
+        return $methods[0];
+    }
+
     public function __get($property)
     {
         // NB: Aliased accessors
-        $reflect = new ReflectionClass($this);
-        $methods = array_filter($reflect->getMethods(), fn(ReflectionMethod $method) => preg_match('/^get/', $method->name) && !empty($method->getAttributes(Property::class)));
-
-        if(!empty($methods))
-        {
-            if(count($methods) > 1)
-                throw new LogicException("Ambiguous property attribute");
-
-            $method = $methods[0];
-
+        if($method = $this->getAliasedMethod('get', $property))
             return $this->{$method->name}();
-        }
 
         // NB: Plain accessors
         $internal = "_$property";
@@ -75,6 +98,14 @@ trait PropertyAccessors
 
     public function __set($property, $value)
     {
+        // NB: Aliased accessors
+        if($method = $this->getAliasedMethod('set', $property))
+        {
+            $this->{$method->name}($value);
+            return;
+        }
+
+        // NB: Plain accessors
         $internal = "_$property";
 
         if(!$this->isPropertySettable($internal))
