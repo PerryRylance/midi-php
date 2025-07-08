@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use LogicException;
 use PerryRylance\Midi\Traits\PropertyAccessors;
 use PerryRylance\Midi\Attributes\Getter;
+use PerryRylance\Midi\Attributes\Property;
 use PerryRylance\Midi\Attributes\Setter;
 
 /**
@@ -46,6 +47,28 @@ class ReadWriteAccessor
     private function setTransforms(int $value)
     {
         $this->_transforms = $value * 3;
+    }
+}
+
+/**
+ * @property int $external
+ */
+class AliasedAccessor
+{
+    use PropertyAccessors;
+
+    private $_internal = 54321;
+
+    #[Property("external")]
+    protected function getInternal()
+    {
+        return $this->_internal - 50000;
+    }
+
+    #[Property("external")]
+    protected function setInternal(int $value)
+    {
+        $this->_internal = $value + 999;
     }
 }
 
@@ -93,3 +116,13 @@ it('sets transformed value', function() {
     expect($instance->transforms)->toBe(666);
 
 });
+
+it('reads aliased value', function() {
+
+    $instance = new AliasedAccessor;
+
+    expect($instance->external)->toBe(4321);
+
+});
+
+// Throws on ambiguous aliased property

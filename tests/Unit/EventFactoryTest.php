@@ -94,3 +94,10 @@ it("reads cue point event", function() {
     expect($event->text)->toBe("Solo");
 
 });
+
+// it("reads set tempo event", function() {
+
+//     /** @var SetTempoEvent $event */
+//     $event = getEventFromByteArray()
+
+// });

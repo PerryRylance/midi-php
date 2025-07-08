@@ -4,8 +4,10 @@ namespace PerryRylance\Midi\Traits;
 
 use LogicException;
 use PerryRylance\Midi\Attributes\Getter;
+use PerryRylance\Midi\Attributes\Property;
 use PerryRylance\Midi\Attributes\Setter;
 use ReflectionClass;
+use ReflectionMethod;
 
 trait PropertyAccessors
 {
@@ -45,6 +47,21 @@ trait PropertyAccessors
 
     public function __get($property)
     {
+        // NB: Aliased accessors
+        $reflect = new ReflectionClass($this);
+        $methods = array_filter($reflect->getMethods(), fn(ReflectionMethod $method) => preg_match('/^get/', $method->name) && !empty($method->getAttributes(Property::class)));
+
+        if(!empty($methods))
+        {
+            if(count($methods) > 1)
+                throw new LogicException("Ambiguous property attribute");
+
+            $method = $methods[0];
+
+            return $this->{$method->name}();
+        }
+
+        // NB: Plain accessors
         $internal = "_$property";
 
         if(!$this->isPropertyGettable($internal))
