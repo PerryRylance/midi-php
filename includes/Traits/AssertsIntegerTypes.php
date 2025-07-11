@@ -2,14 +2,14 @@
 
 namespace PerryRylance\Midi\Traits;
 
-use RangeException;
+use OutOfRangeException;
 
 trait AssertsIntegerTypes
 {
     private function assertWithinRange(int $value, int $min, int $max): void
     {
         if($value < $min || $value > $max)
-            throw new RangeException();
+            throw new OutOfRangeException("$value is not within the range $min - $max");
     }
 
     protected function assertByte(int $value): void

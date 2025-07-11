@@ -14,6 +14,8 @@ use ReflectionMethod;
 
 trait PropertyAccessors
 {
+    use AssertsIntegerTypes;
+
     private function getPropertyAttributes($property, ?string $attribute = null)
     {
         $reflection = new ReflectionClass($this);
@@ -87,6 +89,18 @@ trait PropertyAccessors
         return $methods[0];
     }
 
+    private function getAliasedSetterType(ReflectionMethod $method): ?Type
+    {
+        $attributes = $method->getAttributes(Property::class);
+
+        if(empty($attributes))
+            return null;
+
+        $instance = $attributes[0]->newInstance();
+
+        return $instance->type;
+    }
+
     private function getPropertyType(string $internal): ?Type
     {
         $attributes = $this->getPropertyAttributes($internal, Setter::class);
@@ -99,7 +113,7 @@ trait PropertyAccessors
         return $attribute->newInstance()->type;
     }
 
-    private function assertValueInRange($value, ?Type $type): void
+    private function assertValueInTypeRange($value, ?Type $type): void
     {
         if(!$type || $type === Type::MIXED)
             return;
@@ -107,23 +121,20 @@ trait PropertyAccessors
         switch($type)
         {
             case Type::BYTE:
-                $max = 0xFF;
+                $this->assertByte($value);
                 break;
             
             case Type::SHORT:
-                $max = 0xFFFF;
+                $this->assertShort($value);
                 break;
             
             case Type::INT:
-                $max = 0xFFFFFFFF;
+                $this->assertUint($value);
                 break;
             
             default:
                 throw new LogicException();
         }
-
-        if($value < 0 || $value > $max)
-            throw new OutOfRangeException("$value is out of range for {$type->value}");
     }
 
     public function __get($property)
@@ -149,6 +160,9 @@ trait PropertyAccessors
         // NB: Aliased accessors
         if($method = $this->getAliasedMethod('set', $property))
         {
+            if($type = $this->getAliasedSetterType($method))
+                $this->assertValueInTypeRange($value, $type);
+
             $this->{$method->name}($value);
             return;
         }
@@ -159,7 +173,7 @@ trait PropertyAccessors
         if(!$this->isPropertySettable($internal))
             throw new LogicException("Property '$property' is not settable");
 
-        $this->assertValueInRange($value, $this->getPropertyType($internal));
+        $this->assertValueInTypeRange($value, $this->getPropertyType($internal));
 
         if($this->hasSetterMethod($property))
             $this->{"set$property"}($value);

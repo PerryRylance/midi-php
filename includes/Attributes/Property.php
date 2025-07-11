@@ -7,5 +7,5 @@ use Attribute;
 #[Attribute]
 class Property
 {
-    public function __construct(public string $alias) {}
+    public function __construct(public readonly string $alias, public readonly Type $type = Type::MIXED) {}
 }
