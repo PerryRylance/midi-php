@@ -5,26 +5,18 @@ namespace PerryRylance\Midi\Events\Meta;
 use PerryRylance\Midi\Traits\AssertsIntegerTypes;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
-use PerryRylance\Midi\Exceptions\ParseException;
+use PerryRylance\Midi\Attributes\Type;
 use PerryRylance\Midi\Streams\ReadStream;
+use PerryRylance\Midi\Traits\PropertyAccessors;
 
 /**
  * @property int $number
  */
 class SequenceNumberEvent extends MetaEvent
 {
-    use AssertsIntegerTypes;
-
     #[Getter]
-    #[Setter]
+    #[Setter(Type::SHORT)]
     protected $_number = 0;
-
-    protected function setNumber(int $value)
-    {
-        $this->assertShort($value);
-
-        $this->_number = $value;
-    }
 
     public function readBytes(ReadStream $stream): void
     {

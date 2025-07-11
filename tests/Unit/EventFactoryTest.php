@@ -4,12 +4,16 @@ namespace Tests\Unit;
 
 use PerryRylance\Midi\Events\Event;
 use PerryRylance\Midi\Events\Factories\EventFactory;
+use PerryRylance\Midi\Events\Meta\ChannelPrefixEvent;
 use PerryRylance\Midi\Events\Meta\CopyrightEvent;
 use PerryRylance\Midi\Events\Meta\CuePointEvent;
 use PerryRylance\Midi\Events\Meta\EndOfTrackEvent;
 use PerryRylance\Midi\Events\Meta\FrameRate;
 use PerryRylance\Midi\Events\Meta\InstrumentNameEvent;
+use PerryRylance\Midi\Events\Meta\KeySignatureEvent;
 use PerryRylance\Midi\Events\Meta\MarkerEvent;
+use PerryRylance\Midi\Events\Meta\PortPrefixEvent;
+use PerryRylance\Midi\Events\Meta\Quality;
 use PerryRylance\Midi\Events\Meta\SequenceNumberEvent;
 use PerryRylance\Midi\Events\Meta\SetTempoEvent;
 use PerryRylance\Midi\Events\Meta\SmtpeOffsetEvent;

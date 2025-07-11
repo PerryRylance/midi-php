@@ -12,11 +12,9 @@ use RangeException;
  */
 class SetTempoEvent extends MetaEvent
 {
-    use PropertyAccessors;
-
     const MICROSECOND_PER_MINUTE = 60000000;
 
-    private int $mspqn;
+    protected int $mspqn;
 
     public function __construct()
     {

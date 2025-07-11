@@ -7,5 +7,7 @@ use PerryRylance\Midi\Traits\PropertyAccessors;
 
 abstract class Event
 {
+    use PropertyAccessors;
+
     abstract public function readBytes(ReadStream $stream): void;
 }

@@ -14,8 +14,6 @@ use RangeException;
  */
 class TextEvent extends MetaEvent
 {
-    use PropertyAccessors;
-
     #[Getter]
     #[Setter]
     protected string $_text = "";

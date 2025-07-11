@@ -2,30 +2,26 @@
 
 namespace PerryRylance\Midi\Events\Meta;
 
+use PerryRylance\Midi\Attributes\Type;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
-use PerryRylance\Midi\Attributes\Type;
 use PerryRylance\Midi\Streams\ReadStream;
-use PerryRylance\Midi\Traits\PropertyAccessors;
 
-/**
- * @property int $channel
- */
-class ChannelPrefixEvent extends MetaEvent
+class PortPrefixEvent extends MetaEvent
 {
     #[Getter]
     #[Setter(Type::BYTE)]
-    protected int $_channel = 0;
+    protected int $_port = 0;
 
     public function readBytes(ReadStream $stream): void
     {
         $stream->readByteAssertingValue(1);
 
-        $this->_channel = $stream->readByte();
+        $this->_port = $stream->readByte();
     }
 
     protected function getMetaType(): MetaEventType
     {
-        return MetaEventType::CHANNEL_PREFIX;
+        return MetaEventType::PORT_PREFIX;
     }
 }
