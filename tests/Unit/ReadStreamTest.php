@@ -1,5 +1,6 @@
 <?php
 
+use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
 
 it('reads a signed byte', function () {
@@ -55,7 +56,7 @@ it('reads a vlv', function() {
 it('throws on unexpected end', function() {
 
     $stream = new ReadStream("");
+    $stream->readByte();
 
-    expect(fn() => $stream->readByte())->toThrow(RangeException::class);
-
-});
+})
+    ->throws(ParseException::class);

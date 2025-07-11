@@ -6,6 +6,7 @@ use Exception;
 use ParseError;
 use RangeException;
 use PerryRylance\Midi\Exceptions\ParseException;
+use UnexpectedValueException;
 
 class ReadStream extends Stream
 {
@@ -47,6 +48,14 @@ class ReadStream extends Stream
     public function readByte(): int
     {
         return $this->unpackAndAdvance(Stream::FORMAT_BYTE);
+    }
+
+    public function readByteAssertingValue(int $expected): void
+    {
+        $actual = $this->readByte();
+
+        if($actual !== $expected)
+            throw new UnexpectedValueException();
     }
 
     public function readSignedByte(): int

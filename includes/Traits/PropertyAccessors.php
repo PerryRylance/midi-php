@@ -3,20 +3,29 @@
 namespace PerryRylance\Midi\Traits;
 
 use LogicException;
+use OutOfRangeException;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Property;
 use PerryRylance\Midi\Attributes\Setter;
+use PerryRylance\Midi\Attributes\Type;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 
 trait PropertyAccessors
 {
-    private function isPropertyAccessable($property, string $attribute): bool
+    private function getPropertyAttributes($property, ?string $attribute = null)
     {
         $reflection = new ReflectionClass($this);
         $property = $reflection->getProperty($property);
         $attributes = $property->getAttributes($attribute);
+
+        return $attributes;
+    }
+
+    private function doesPropertyHaveAttribute($property, string $attribute): bool
+    {
+        $attributes = $this->getPropertyAttributes($property, $attribute);
 
         return !empty($attributes);
     }
@@ -28,7 +37,7 @@ trait PropertyAccessors
 
     private function isPropertyGettable($property): bool
     {
-        return $this->isPropertyAccessable($property, Getter::class);
+        return $this->doesPropertyHaveAttribute($property, Getter::class);
     }
 
     private function hasGetterMethod($property): bool
@@ -38,7 +47,7 @@ trait PropertyAccessors
 
     private function isPropertySettable($property): bool
     {
-        return $this->isPropertyAccessable($property, Setter::class);
+        return $this->doesPropertyHaveAttribute($property, Setter::class);
     }
 
     private function hasSetterMethod($property): bool
@@ -78,6 +87,45 @@ trait PropertyAccessors
         return $methods[0];
     }
 
+    private function getPropertyType(string $internal): ?Type
+    {
+        $attributes = $this->getPropertyAttributes($internal, Setter::class);
+
+        if(empty($attributes))
+            throw new LogicException();
+
+        $attribute = $attributes[0];
+
+        return $attribute->newInstance()->type;
+    }
+
+    private function assertValueInRange($value, ?Type $type): void
+    {
+        if(!$type || $type === Type::MIXED)
+            return;
+
+        switch($type)
+        {
+            case Type::BYTE:
+                $max = 0xFF;
+                break;
+            
+            case Type::SHORT:
+                $max = 0xFFFF;
+                break;
+            
+            case Type::INT:
+                $max = 0xFFFFFFFF;
+                break;
+            
+            default:
+                throw new LogicException();
+        }
+
+        if($value < 0 || $value > $max)
+            throw new OutOfRangeException("$value is out of range for {$type->value}");
+    }
+
     public function __get($property)
     {
         // NB: Aliased accessors
@@ -110,6 +158,8 @@ trait PropertyAccessors
 
         if(!$this->isPropertySettable($internal))
             throw new LogicException("Property '$property' is not settable");
+
+        $this->assertValueInRange($value, $this->getPropertyType($internal));
 
         if($this->hasSetterMethod($property))
             $this->{"set$property"}($value);

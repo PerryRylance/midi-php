@@ -2,14 +2,14 @@
 
 namespace PerryRylance\Midi\Events\Meta;
 
-use InvalidArgumentException;
-use LogicException;
-use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Traits\PropertyAccessors;
 use PerryRylance\Midi\Attributes\Property;
 use RangeException;
 
+/**
+ * @property int|float $bpm
+ */
 class SetTempoEvent extends MetaEvent
 {
     use PropertyAccessors;
@@ -42,10 +42,7 @@ class SetTempoEvent extends MetaEvent
 
     public function readBytes(ReadStream $stream): void
     {
-        $length = $stream->readByte();
-
-        if($length !== 3)
-            throw new ParseException("Expected length to be 3");
+        $stream->readByteAssertingValue(3);
 
         $a = $stream->readByte();
         $b = $stream->readByte();

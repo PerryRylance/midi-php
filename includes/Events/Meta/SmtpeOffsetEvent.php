@@ -19,10 +19,7 @@ class SmtpeOffsetEvent extends MetaEvent
 
     public function readBytes(ReadStream $stream): void
     {
-        $length = $stream->readByte();
-
-        if($length !== 5)
-            throw new ParseException('Expected length to be 5');
+        $stream->readByteAssertingValue(5);
 
         // NB: The fourth byte specifies the hours of the SMPTE time and the frame rate
 		// NB: This byte has the binary format "0sshhhhh". The top bit is zero as it is reserved according to the MIDI time code specifications.
