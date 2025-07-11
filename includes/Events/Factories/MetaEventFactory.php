@@ -18,6 +18,7 @@ use PerryRylance\Midi\Events\Meta\SmtpeOffsetEvent;
 use PerryRylance\Midi\Events\Meta\TextEvent;
 use PerryRylance\Midi\Events\Meta\TrackNameEvent;
 use PerryRylance\Midi\Events\Meta\PortPrefixEvent;
+use PerryRylance\Midi\Events\Meta\TimeSignatureEvent;
 use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
 
@@ -43,6 +44,7 @@ class MetaEventFactory
             MetaEventType::CHANNEL_PREFIX => new ChannelPrefixEvent,
             MetaEventType::PORT_PREFIX => new PortPrefixEvent,
             MetaEventType::KEY_SIGNATURE => new KeySignatureEvent,
+            MetaEventType::TIME_SIGNATURE => new TimeSignatureEvent,
             default => throw new ParseException("Invalid meta event type 0x" . dechex($byte))
         };
 

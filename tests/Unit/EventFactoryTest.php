@@ -18,6 +18,7 @@ use PerryRylance\Midi\Events\Meta\SequenceNumberEvent;
 use PerryRylance\Midi\Events\Meta\SetTempoEvent;
 use PerryRylance\Midi\Events\Meta\SmtpeOffsetEvent;
 use PerryRylance\Midi\Events\Meta\TextEvent;
+use PerryRylance\Midi\Events\Meta\TimeSignatureEvent;
 use PerryRylance\Midi\Events\Meta\TrackNameEvent;
 use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;

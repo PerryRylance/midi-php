@@ -6,7 +6,13 @@ use OutOfRangeException;
 
 trait AssertsIntegerTypes
 {
-    private function assertWithinRange(int $value, int $min, int $max): void
+    protected function assertNonZero(int $value): void
+    {
+        if($value === 0)
+            throw new OutOfRangeException("$value is not non-zero");
+    }
+
+    protected function assertWithinRange(int $value, int $min, int $max): void
     {
         if($value < $min || $value > $max)
             throw new OutOfRangeException("$value is not within the range $min - $max");

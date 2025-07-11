@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use BadMethodCallException;
+use OutOfRangeException;
 use PerryRylance\Midi\Streams\StatusBytes;
 use RangeException;
 
@@ -41,4 +42,4 @@ it('throws attempting to set out of range value in status bytes', function() {
     $status[0] = 0xFFF;
 
 })
-    ->throws(RangeException::class);
+    ->throws(OutOfRangeException::class);

@@ -32,4 +32,16 @@ class KeySignatureEvent extends MetaEvent
     {
         return MetaEventType::KEY_SIGNATURE;
     }
+
+    protected function setAccidentals(int $value)
+    {
+        $this->assertWithinRange($value, -7, 7);
+
+        $this->_accidentals = $value;
+    }
+
+    protected function setQuality(Quality $value)
+    {
+        $this->quality = $value;
+    }
 }
