@@ -10,3 +10,4 @@ A package for reading and writing MIDI files and streams in PHP.
 ## TODO
 - PHPStan
 - Formatter
+- Make robust against misusing trait (eg private vars cause __)

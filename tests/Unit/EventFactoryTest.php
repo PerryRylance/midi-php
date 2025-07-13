@@ -7,6 +7,7 @@ use PerryRylance\Midi\Events\Factories\EventFactory;
 use PerryRylance\Midi\Events\Meta\ChannelPrefixEvent;
 use PerryRylance\Midi\Events\Meta\CopyrightEvent;
 use PerryRylance\Midi\Events\Meta\CuePointEvent;
+use PerryRylance\Midi\Events\Meta\DeviceManufacturer;
 use PerryRylance\Midi\Events\Meta\EndOfTrackEvent;
 use PerryRylance\Midi\Events\Meta\FrameRate;
 use PerryRylance\Midi\Events\Meta\InstrumentNameEvent;
@@ -15,6 +16,7 @@ use PerryRylance\Midi\Events\Meta\MarkerEvent;
 use PerryRylance\Midi\Events\Meta\PortPrefixEvent;
 use PerryRylance\Midi\Events\Meta\Quality;
 use PerryRylance\Midi\Events\Meta\SequenceNumberEvent;
+use PerryRylance\Midi\Events\Meta\SequencerSpecificEvent;
 use PerryRylance\Midi\Events\Meta\SetTempoEvent;
 use PerryRylance\Midi\Events\Meta\SmtpeOffsetEvent;
 use PerryRylance\Midi\Events\Meta\TextEvent;
@@ -192,7 +194,7 @@ it("reads sequencer specific event", function () {
 
     expect($event)->toBeInstanceOf(SequencerSpecificEvent::class);
     expect($event->manufacturer)->toBe(DeviceManufacturer::ROLAND);
-    expect(count($event->bytes))->toBe(3);
+    expect(strlen($event->bytes))->toBe(3);
 });
 
 it("throws on invalid meta event type", function () {
