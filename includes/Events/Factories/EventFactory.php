@@ -3,6 +3,7 @@
 namespace PerryRylance\Midi\Events\Factories;
 
 use LogicException;
+use PerryRylance\Midi\Events\Control\ControlEvent;
 use PerryRylance\Midi\Events\Event;
 use PerryRylance\Midi\Events\EventType;
 use PerryRylance\Midi\Events\SysEx\SysExEvent;
@@ -31,9 +32,10 @@ class EventFactory
                 $result = new SysExEvent($delta);
                 $result->readBytes($stream);
                 break;
-            
+
             default:
-                throw new LogicException("Not yet implemented");
+                $result = ControlEventFactory::fromStream($stream, $type, $delta, $status);
+                break;
         }
 
         return $result;
