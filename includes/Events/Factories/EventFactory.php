@@ -5,6 +5,7 @@ namespace PerryRylance\Midi\Events\Factories;
 use LogicException;
 use PerryRylance\Midi\Events\Event;
 use PerryRylance\Midi\Events\EventType;
+use PerryRylance\Midi\Events\SysEx\SysExEvent;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Streams\StatusBytes;
 
@@ -27,7 +28,9 @@ class EventFactory
                 break;
 
             case EventType::SYSEX->value:
-                throw new LogicException("Not yet implemented");
+                $result = new SysExEvent($delta);
+                $result->readBytes($stream);
+                break;
             
             default:
                 throw new LogicException("Not yet implemented");

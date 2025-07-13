@@ -22,6 +22,7 @@ use PerryRylance\Midi\Events\Meta\SmtpeOffsetEvent;
 use PerryRylance\Midi\Events\Meta\TextEvent;
 use PerryRylance\Midi\Events\Meta\TimeSignatureEvent;
 use PerryRylance\Midi\Events\Meta\TrackNameEvent;
+use PerryRylance\Midi\Events\SysEx\SysExEvent;
 use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Streams\StatusBytes;
@@ -210,7 +211,7 @@ it("reads sysex event", function () {
 
     expect($event)->toBeInstanceOf(SysExEvent::class);
     expect($event->manufacturer)->toBe(DeviceManufacturer::ROLAND);
-    expect(count($event->bytes))->toBe(2);
+    expect(strlen($event->bytes))->toBe(2);
 });
 
 it("reads note on event", function () {
