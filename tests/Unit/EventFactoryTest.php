@@ -2,6 +2,15 @@
 
 namespace Tests\Unit;
 
+use PerryRylance\Midi\Events\Control\AftertouchEvent;
+use PerryRylance\Midi\Events\Control\ChannelAftertouchEvent;
+use PerryRylance\Midi\Events\Control\ControllerEvent;
+use PerryRylance\Midi\Events\Control\ControllerType;
+use PerryRylance\Midi\Events\Control\NoteOffEvent;
+use PerryRylance\Midi\Events\Control\NoteOnEvent;
+use PerryRylance\Midi\Events\Control\PitchWheelEvent;
+use PerryRylance\Midi\Events\Control\ProgramChangeEvent;
+use PerryRylance\Midi\Events\Control\ProgramType;
 use PerryRylance\Midi\Events\Event;
 use PerryRylance\Midi\Events\Factories\EventFactory;
 use PerryRylance\Midi\Events\Meta\ChannelPrefixEvent;
@@ -220,7 +229,7 @@ it("reads note on event", function () {
 
     expect($event)->toBeInstanceOf(NoteOnEvent::class);
     expect($event->channel)->toBe(2);
-    expect($event->key)->toBe(61);
+    expect($event->pitch)->toBe(61);
     expect($event->velocity)->toBe(120);
 });
 
@@ -230,7 +239,7 @@ it("reads note off event", function () {
 
     expect($event)->toBeInstanceOf(NoteOffEvent::class);
     expect($event->channel)->toBe(3);
-    expect($event->key)->toBe(62);
+    expect($event->pitch)->toBe(62);
     expect($event->velocity)->toBe(120);
 });
 
@@ -240,7 +249,7 @@ it("reads aftertouch event", function () {
 
     expect($event)->toBeInstanceOf(AftertouchEvent::class);
     expect($event->channel)->toBe(4);
-    expect($event->key)->toBe(63);
+    expect($event->pitch)->toBe(63);
     expect($event->pressure)->toBe(121);
 });
 
