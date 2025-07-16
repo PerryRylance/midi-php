@@ -2,9 +2,11 @@
 
 namespace PerryRylance\Midi\Events\Control;
 
+use OutOfRangeException;
 use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Attributes\Getter;
+use PerryRylance\Midi\Attributes\Property;
 
 class PitchWheelEvent extends ControlEvent
 {
@@ -25,5 +27,29 @@ class PitchWheelEvent extends ControlEvent
     protected function getType(): ControlEventType
     {
         return ControlEventType::PITCH_WHEEL;
+    }
+
+    // TODO: Test this out please, do we need remapping eg for exponent
+    #[Property('amount')]
+    protected function getAmount(): float
+    {
+        if($this->_value <= 0x2000)
+            $i = 1 + $this->_value;
+        else
+            $i = $this->_value;
+
+        return -1 + 2 * $i / 0x3FFF;
+    }
+
+    #[Property('amount')]
+    protected function setAmount(float $floating): void
+    {
+        if($floating < -1.0 || $floating > 1.0)
+            throw new OutOfRangeException("Expected value within -1 to +1");
+
+        if($floating > 0)
+            $this->_value = 0x2000 + (round($floating * 0x2000) - 1);
+        else
+            $this->_value = round(($floating + 1) * 0x2000);
     }
 }

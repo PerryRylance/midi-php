@@ -6,8 +6,9 @@ trait AssertsVelocityLike
 {
     use AssertsIntegerTypes;
 
-    protected function assertVelocityLike(int $value): void
+    protected function assertVelocityLike($value): void
     {
+        $this->assertIsInt($value);
         $this->assertWithinRange($value, 0, 0x7F);
     }
 }

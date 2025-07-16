@@ -2,6 +2,7 @@
 
 namespace PerryRylance\Midi\Events\Meta;
 
+use InvalidArgumentException;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
@@ -43,10 +44,14 @@ class TimeSignatureEvent extends MetaEvent
         $this->_numerator = $value;
     }
 
-    protected function setDenominator(int $value): void
+    protected function setDenominator(mixed $value): void
     {
-        if(log($value, 2) % 1 !== 0)
-            throw new UnexpectedValueException("Denominator must be a power of two");
+        $this->assertIsInt('Denominator must be an integer');
+
+        $isPowerOfTwo = $value > 0 && ($value & ($value - 1)) === 0;
+
+        if(!$isPowerOfTwo)
+            throw new InvalidArgumentException("Denominator must be a power of two");
 
         $this->_denominator = $value;
     }

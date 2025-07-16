@@ -14,8 +14,9 @@ abstract class PitchedEvent extends ControlEvent
     #[Setter]
     protected int $_pitch = 60;
 
-    protected function setPitch(int $value): void
+    protected function setPitch(mixed $value): void
     {
+        $this->assertIsInt($value);
         $this->assertPitch($value);
 
         $this->_pitch = $value;

@@ -2,6 +2,7 @@
 
 namespace PerryRylance\Midi\Traits;
 
+use InvalidArgumentException;
 use OutOfRangeException;
 
 trait AssertsIntegerTypes
@@ -10,6 +11,12 @@ trait AssertsIntegerTypes
     {
         if($value === 0)
             throw new OutOfRangeException("$value is not non-zero");
+    }
+
+    protected function assertIsInt(mixed $value, ?string $message = null): void
+    {
+        if(!is_int($value))
+            throw new InvalidArgumentException($message ?? "$value must be an integer");
     }
 
     protected function assertWithinRange(int $value, int $min, int $max): void

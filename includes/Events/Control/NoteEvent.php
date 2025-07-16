@@ -15,7 +15,7 @@ abstract class NoteEvent extends PitchedEvent
     #[Setter]
     protected int $_velocity = 127;
 
-    protected function setVelocity(int $value): void
+    protected function setVelocity(mixed $value): void
     {
         $this->assertVelocityLike($value);
 

@@ -20,7 +20,7 @@ class AftertouchEvent extends PitchedEvent
         return ControlEventType::AFTERTOUCH;
     }
 
-    protected function setPressure(int $value): void
+    protected function setPressure(mixed $value): void
     {
         $this->assertVelocityLike($value);
 

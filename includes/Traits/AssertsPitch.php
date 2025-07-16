@@ -6,8 +6,9 @@ trait AssertsPitch
 {
     use AssertsIntegerTypes;
 
-    protected function assertPitch(int $value): void
+    protected function assertPitch($value): void
     {
+        $this->assertIsInt($value);
         $this->assertWithinRange($value, 0, 0x7F);
     }
 }

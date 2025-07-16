@@ -2,6 +2,7 @@
 
 namespace PerryRylance\Midi\Events\Meta;
 
+use InvalidArgumentException;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
 use LogicException;
@@ -24,7 +25,7 @@ class TextEvent extends MetaEvent
         return MetaEventType::TEXT;
     }
 
-    protected function setText($value)
+    protected function setText(string $value)
     {
         $this->assertValidText($value);
 
@@ -36,8 +37,8 @@ class TextEvent extends MetaEvent
         if(strlen($value) > 255)
             throw new OverflowException('Text too long');
 
-        if(!preg_match('/^[\x00-\xFF]*$/', $value))
-            throw new LogicException('One or more characters are not valid ASCII');
+        if(preg_match('/[^\x00-\x7F]/', $value))
+            throw new InvalidArgumentException('One or more characters are not valid ASCII');
     }
 
     public function readBytes(ReadStream $stream): void
@@ -48,6 +49,6 @@ class TextEvent extends MetaEvent
         for($i = 0; $i < $length; $i++)
             $buffer .= chr($stream->readByte());
 
-        $this->_text = $buffer;
+        $this->text = $buffer;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace PerryRylance\Midi\Events\Control;
 
+use InvalidArgumentException;
 use PerryRylance\Midi\Events\Event;#
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
@@ -23,9 +24,10 @@ abstract class ControlEvent extends Event
 
     protected abstract function getType(): ControlEventType;
 
-    protected function setChannel(int $value): void
+    protected function setChannel($value): void
     {
-        $this->assertWithinRange($value, 0, 16);
+        $this->assertIsInt($value, 'Channel must be an integer');
+        $this->assertWithinRange($value, 0, 0xF);
 
         $this->_channel = $value;
     }
