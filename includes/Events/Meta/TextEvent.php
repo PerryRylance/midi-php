@@ -5,6 +5,7 @@ namespace PerryRylance\Midi\Events\Meta;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
 use LogicException;
+use OverflowException;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Traits\PropertyAccessors;
 use RangeException;
@@ -33,7 +34,7 @@ class TextEvent extends MetaEvent
     protected function assertValidText(string $value): void
     {
         if(strlen($value) > 255)
-            throw new RangeException('Text too long');
+            throw new OverflowException('Text too long');
 
         if(!preg_match('/^[\x00-\xFF]*$/', $value))
             throw new LogicException('One or more characters are not valid ASCII');

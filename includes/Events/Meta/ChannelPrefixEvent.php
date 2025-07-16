@@ -14,14 +14,21 @@ use PerryRylance\Midi\Traits\PropertyAccessors;
 class ChannelPrefixEvent extends MetaEvent
 {
     #[Getter]
-    #[Setter(Type::BYTE)]
+    #[Setter]
     protected int $_channel = 0;
 
     public function readBytes(ReadStream $stream): void
     {
         $stream->readByteAssertingValue(1);
 
-        $this->_channel = $stream->readByte();
+        $this->channel = $stream->readByte();
+    }
+
+    protected function setChannel(int $value): void
+    {
+        $this->assertWithinRange($value, 0, 0xF);
+
+        $this->_channel = $value;
     }
 
     protected function getMetaType(): MetaEventType
