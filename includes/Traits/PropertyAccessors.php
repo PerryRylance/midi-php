@@ -8,8 +8,10 @@ use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Property;
 use PerryRylance\Midi\Attributes\Setter;
 use PerryRylance\Midi\Attributes\Type;
+use PerryRylance\Midi\Exceptions\PropertyException;
 use ReflectionAttribute;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 trait PropertyAccessors
@@ -19,7 +21,13 @@ trait PropertyAccessors
     private function getPropertyAttributes($property, ?string $attribute = null)
     {
         $reflection = new ReflectionClass($this);
-        $property = $reflection->getProperty($property);
+        
+        try{
+            $property = $reflection->getProperty($property);
+        }catch(ReflectionException $e) {
+            throw new PropertyException("Property $property is not defined on " . __CLASS__);
+        }
+
         $attributes = $property->getAttributes($attribute);
 
         return $attributes;
