@@ -46,7 +46,7 @@ class TimeSignatureEvent extends MetaEvent
 
     protected function setDenominator(mixed $value): void
     {
-        $this->assertIsInt('Denominator must be an integer');
+        $this->assertIsInt($value, 'Denominator must be an integer');
 
         $isPowerOfTwo = $value > 0 && ($value & ($value - 1)) === 0;
 
