@@ -7,6 +7,8 @@ use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Property;
+use PerryRylance\Midi\Streams\WriteStream;
+use PerryRylance\Midi\Streams\StatusBytes;
 
 class PitchWheelEvent extends ControlEvent
 {
@@ -22,6 +24,20 @@ class PitchWheelEvent extends ControlEvent
             throw new ParseException("Expected first bit of first byte to be zero");
 
         $this->_value = (($second & 0x7F) << 7) | ($first & 0x7F);
+    }
+
+    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+    {
+        parent::writeBytes($stream, $status);
+
+        // NB: Internal		..012345 6789ABCD
+		// NB: Serialized	.789ABCD .0123456
+
+        $left = $this->_value & 0x7F;
+        $right = ($this->_value & 0x3F80) >> 7;
+
+        $stream->writeByte($left);
+        $stream->writeByte($right);
     }
 
     protected function getType(): ControlEventType

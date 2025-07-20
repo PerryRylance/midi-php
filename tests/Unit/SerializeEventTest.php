@@ -29,6 +29,7 @@ use PerryRylance\Midi\Events\Meta\SequenceNumberEvent;
 use PerryRylance\Midi\Events\Meta\SequencerSpecificEvent;
 use PerryRylance\Midi\Events\Meta\TimeSignatureEvent;
 use PerryRylance\Midi\Events\SysEx\SysExEvent;
+use PerryRylance\Midi\Streams\ReadStream;
 use Tests\EventByteArrays;
 
 it('serializes text event', function() {
@@ -171,7 +172,7 @@ it('serializes sysex event', function () {
 it('serializes note on event', function () {
     $event = new NoteOnEvent();
     $event->channel = 2;
-    $event->key = 61;
+    $event->pitch = 61;
     $event->velocity = 120;
 
     expect($event)->toMatchByteArrayWhenSerialized(EventByteArrays::NOTE_ON);
@@ -180,7 +181,7 @@ it('serializes note on event', function () {
 it('serializes note off event', function () {
     $event = new NoteOffEvent();
     $event->channel = 3;
-    $event->key = 62;
+    $event->pitch = 62;
     $event->velocity = 120;
 
     expect($event)->toMatchByteArrayWhenSerialized(EventByteArrays::NOTE_OFF);
@@ -189,7 +190,7 @@ it('serializes note off event', function () {
 it('serializes aftertouch event', function () {
     $event = new AftertouchEvent();
     $event->channel = 4;
-    $event->key = 63;
+    $event->pitch = 63;
     $event->pressure = 121;
 
     expect($event)->toMatchByteArrayWhenSerialized(EventByteArrays::AFTERTOUCH);
@@ -221,9 +222,10 @@ it('serializes channel aftertouch event', function () {
 });
 
 it('serializes pitch wheel event', function () {
-    $event = new PitchWheelEvent();
-    $event->channel = 3;
-    $event->value = 0x1CD4;
+
+    // NB: Yes it's a readback test, but we don't expose "value" so it serves it's purpose
+    /** @var PitchWheelEvent $event */
+    $event = getEventFromByteArray(EventByteArrays::PITCH_WHEEL);
 
     expect($event)->toMatchByteArrayWhenSerialized(EventByteArrays::PITCH_WHEEL);
 

@@ -6,6 +6,8 @@ use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
 use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
+use PerryRylance\Midi\Streams\WriteStream;
+use PerryRylance\Midi\Streams\StatusBytes;
 
 class ControllerEvent extends ControlEvent
 {
@@ -14,11 +16,6 @@ class ControllerEvent extends ControlEvent
     #[Getter]
     #[Setter('byte')]
     protected int $_value = 0;
-
-    protected function getType(): ControlEventType
-    {
-        return ControlEventType::CONTROLLER;
-    }
 
     public function readBytes(ReadStream $stream): void
     {
@@ -31,5 +28,18 @@ class ControllerEvent extends ControlEvent
         $this->controller = $controller;
 
         $this->value = $stream->readByte();
+    }
+
+    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+    {
+        parent::writeBytes($stream, $status);
+
+        $stream->writeByte($this->controller->value);
+        $stream->writeByte($this->value);
+    }
+
+    protected function getType(): ControlEventType
+    {
+        return ControlEventType::CONTROLLER;
     }
 }

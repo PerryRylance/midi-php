@@ -5,6 +5,8 @@ namespace PerryRylance\Midi\Events\Control;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
 use PerryRylance\Midi\Streams\ReadStream;
+use PerryRylance\Midi\Streams\WriteStream;
+use PerryRylance\Midi\Streams\StatusBytes;
 use PerryRylance\Midi\Traits\AssertsVelocityLike;
 
 class ChannelAftertouchEvent extends ControlEvent
@@ -18,6 +20,13 @@ class ChannelAftertouchEvent extends ControlEvent
     public function readBytes(ReadStream $stream): void
     {
         $this->pressure = $stream->readByte();
+    }
+
+    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+    {
+        parent::writeBytes($stream, $status);
+
+        $stream->writeByte($this->pressure);
     }
 
     protected function setPressure(mixed $value): void

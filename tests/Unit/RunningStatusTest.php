@@ -34,6 +34,6 @@ it('parses C major triad with running status', function() {
 
 it('serializes C major triad with running status', function() {
 
-    fail("Not yet implemented");
+    test()->fail("Not yet implemented");
 
 });
