@@ -1,6 +1,7 @@
 {
     "require-dev": {
-        "pestphp/pest": "^3.8"
+        "pestphp/pest": "^3.8",
+        "illuminate/support": "^12.20"
     },
     "autoload": {
         "psr-4": {

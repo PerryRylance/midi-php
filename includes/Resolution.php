@@ -7,6 +7,7 @@ use OutOfRangeException;
 use PerryRylance\Midi\Attributes\Property;
 use PerryRylance\Midi\Events\Meta\FrameRate;
 use PerryRylance\Midi\Exceptions\ResolutionException;
+use PerryRylance\Midi\Streams\WriteStream;
 use PerryRylance\Midi\Traits\PropertyAccessors;
 
 /**
@@ -20,6 +21,11 @@ class Resolution
     use PropertyAccessors;
 
     private int $_value = 480;
+
+    public function writeBytes(WriteStream $stream): void
+    {
+        $stream->writeShort($this->_value);
+    }
 
     #[Property('units')]
     protected function getUnits(): ResolutionUnits
