@@ -7,6 +7,8 @@ use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Traits\PropertyAccessors;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
+use PerryRylance\Midi\Streams\StatusBytes;
+use PerryRylance\Midi\Streams\WriteStream;
 
 abstract class Event
 {
@@ -22,6 +24,13 @@ abstract class Event
     }
 
     abstract public function readBytes(ReadStream $stream): void;
+
+    protected abstract function writeType(WriteStream $stream, ?StatusBytes $status = null): void;
+
+    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+    {
+        $this->writeType($stream, $status);
+    }
 
     protected function setDelta(mixed $value): void
     {

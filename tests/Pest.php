@@ -11,6 +11,13 @@
 |
 */
 
+use PerryRylance\Midi\Events\Event;
+use PerryRylance\Midi\Events\Factories\EventFactory;
+use PerryRylance\Midi\Streams\ReadStream;
+use PerryRylance\Midi\Streams\StatusBytes;
+use PerryRylance\Midi\Streams\WriteStream;
+use Tests\EventByteArrays;
+
 pest()->extend(Tests\TestCase::class)->in('Feature');
 
 /*
@@ -39,7 +46,52 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function getReadStreamFromByteArray(array $bytes): ReadStream
 {
-    // ..
+    $binary = pack('C*', ...$bytes);
+    $stream = new ReadStream($binary);
+
+    return $stream;
 }
+
+/**
+ * @template TEvent of Event
+ * @param array<int> $bytes
+ * @return TEvent
+ */
+function getEventFromByteArray(array $bytes): Event
+{
+    return EventFactory::fromStream(getReadStreamFromByteArray($bytes), new StatusBytes);
+}
+
+expect()->extend('toMatchByteArrayWhenSerialized', function(array $bytes) {
+
+    $stream = new WriteStream();
+
+    if(!($this->value instanceof Event))
+        test()->fail('Expected an Event');
+
+    /** @var Event $event */
+    $event = $this->value;
+    $event->writeBytes($stream);
+
+    $byteToPaddedHex = function($byte) {
+        $hex = dechex($byte);
+
+        if(strlen($hex) === 2)
+            return $hex;
+
+        return "0" . $hex;
+    };
+
+    $arrayToHex = fn($bytes) => array_values(array_map(
+        fn($byte) => "0x" . $byteToPaddedHex($byte),
+        $bytes
+    ));
+
+    $expected = $arrayToHex($bytes);
+    $actual = $arrayToHex(unpack('C*', $stream->toBinary()));
+
+    return expect($actual)->toBe($expected);
+
+});

@@ -8,6 +8,7 @@ use PerryRylance\Midi\Attributes\Setter;
 use LogicException;
 use OverflowException;
 use PerryRylance\Midi\Streams\ReadStream;
+use PerryRylance\Midi\Streams\WriteStream;
 use PerryRylance\Midi\Traits\PropertyAccessors;
 use RangeException;
 
@@ -53,5 +54,10 @@ class TextEvent extends MetaEvent
         $this->setText($buffer, false);
     }
     
+    // public function writeBytes(WriteStream $stream): void
+    // {
+    //     parent::writeBytes($stream);
+    // }
+
     // TODO: Strict ASCII mode whne writing
 }

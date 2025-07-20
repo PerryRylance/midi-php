@@ -33,22 +33,7 @@ use PerryRylance\Midi\Events\Meta\TimeSignatureEvent;
 use PerryRylance\Midi\Events\Meta\TrackNameEvent;
 use PerryRylance\Midi\Events\SysEx\SysExEvent;
 use PerryRylance\Midi\Exceptions\ParseException;
-use PerryRylance\Midi\Streams\ReadStream;
-use PerryRylance\Midi\Streams\StatusBytes;
 use Tests\EventByteArrays;
-
-/**
- * @template TEvent of Event
- * @param array<int> $bytes
- * @return TEvent
- */
-function getEventFromByteArray(array $bytes): Event
-{
-    $binary = pack('C*', ...$bytes);
-    $stream = new ReadStream($binary);
-
-    return EventFactory::fromStream($stream, new StatusBytes);
-}
 
 it("reads text event", function() {
 

@@ -42,9 +42,14 @@ class EventByteArrays
 	const INVALID_TEXT =				[0xFF, 0x01, 0x04, 0x42, 0x61, 0x73];
 	const INVALID_META_EVENT_TYPE =     [0xFF, 0x88, 0x01, 0x00];
 
+	public static function toBinary(array $bytes): string
+	{
+		return pack('C*', ...$bytes);
+	}
+
 	public static function toReadStream(array $bytes): ReadStream
 	{
-		$binary = pack('C*', ...$bytes);
+		$binary = static::toBinary($bytes);
 		$stream = new ReadStream($binary);
 
 		return $stream;
