@@ -8,11 +8,13 @@ use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
 use PerryRylance\Midi\Exceptions\ParseException;
+use PerryRylance\Midi\Streams\WriteStream;
+use PerryRylance\Midi\Streams\StatusBytes;
 
 class SequencerSpecificEvent extends MetaEvent
 {
     #[Getter]
-    #[Setter('byte')]
+    #[Setter]
     protected DeviceManufacturer $_manufacturer;
 
     #[Getter]
@@ -34,6 +36,20 @@ class SequencerSpecificEvent extends MetaEvent
 
         for($i = 1; $i < $length; $i++)
             $this->_bytes .= chr($stream->readByte());
+    }
+
+    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+    {
+        parent::writeBytes($stream, $status);
+
+        $length = strlen($this->_bytes);
+
+        $stream->writeByte($length + 1); // NB: Add 1 for manufacturer
+
+        $stream->writeByte($this->_manufacturer->value);
+
+        for($i = 0; $i < $length; $i++)
+            $stream->writeByte(ord($this->_bytes[$i]));
     }
 
     protected function setBytes(string $value): void

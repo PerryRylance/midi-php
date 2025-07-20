@@ -7,6 +7,8 @@ use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
 use PerryRylance\Midi\Attributes\Type;
+use PerryRylance\Midi\Streams\WriteStream;
+use PerryRylance\Midi\Streams\StatusBytes;
 use UnexpectedValueException;
 
 class TimeSignatureEvent extends MetaEvent
@@ -35,6 +37,18 @@ class TimeSignatureEvent extends MetaEvent
         $this->setDenominator(pow($stream->readByte(), 2));
         $this->setTicksPerMetronomeClick($stream->readByte());
         $this->setNum32ndNotesPerBeat($stream->readByte());
+    }
+
+    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+    {
+        parent::writeBytes($stream, $status);
+
+        $stream->writeByte(4);
+
+        $stream->writeByte($this->numerator);
+        $stream->writeByte(log($this->denominator, 2));
+        $stream->writeByte($this->ticksPerMetronomeClick);
+        $stream->writeByte($this->num32ndNotesPerBeat);
     }
 
     protected function setNumerator(int $value): void

@@ -8,6 +8,9 @@ use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
+use PerryRylance\Midi\Events\EventType;
+use PerryRylance\Midi\Streams\WriteStream;
+use PerryRylance\Midi\Streams\StatusBytes;
 
 class SysExEvent extends Event
 {
@@ -32,5 +35,24 @@ class SysExEvent extends Event
 
         while(($byte = $stream->readByte()) !== 0xF7)
             $this->_bytes .= chr($byte);
+    }
+
+    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+    {
+        parent::writeBytes($stream, $status);
+        
+        $stream->writeByte($this->_manufacturer->value);
+
+        $length = strlen($this->_bytes);
+
+        for($i = 0; $i < $length; $i++)
+            $stream->writeByte(ord($this->_bytes[$i]));
+
+        $stream->writeByte(0xF7);
+    }
+
+    protected function writeType(WriteStream $stream, ?StatusBytes $status = null): void
+    {
+        $stream->writeByte(EventType::SYSEX->value);
     }
 }

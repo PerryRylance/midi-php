@@ -4,6 +4,8 @@ namespace PerryRylance\Midi\Events\Meta;
 
 use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Streams\ReadStream;
+use PerryRylance\Midi\Streams\WriteStream;
+use PerryRylance\Midi\Streams\StatusBytes;
 
 class SmtpeOffsetEvent extends MetaEvent
 {
@@ -35,6 +37,20 @@ class SmtpeOffsetEvent extends MetaEvent
         $this->seconds = $stream->readByte();
         $this->frames = $stream->readByte();
         $this->subframes = $stream->readByte();
+    }
+
+    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+    {
+        parent::writeBytes($stream, $status);
+
+        $stream->writeByte(5);
+
+        $stream->writeByte((($this->rate->value << 5) & 0x60) | ($this->hours & 0x1F));
+
+        $stream->writeByte($this->minutes);
+        $stream->writeByte($this->seconds);
+        $stream->writeByte($this->frames);
+        $stream->writeByte($this->subframes);
     }
 
     protected function getMetaType(): MetaEventType

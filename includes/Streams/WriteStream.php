@@ -18,6 +18,14 @@ class WriteStream extends Stream
         $this->position++; // TODO: Is this even necessary?
     }
 
+    public function writeSignedByte(int $value): void
+    {
+        $this->assertWithinRange($value, -128, 128);
+
+        $this->buffer .= pack(Stream::FORMAT_SIGNED_BYTE, $value);
+        $this->position++;
+    }
+
     public function writeShort(int $value): void
     {
         $this->assertShort($value);
@@ -34,6 +42,7 @@ class WriteStream extends Stream
         $this->position += 4;
     }
 
+    // TODO: Match this case (Vlv) everywhere
     public function writeVlv(int $value): void
     {
         $buffer = $value & 0x7F;
