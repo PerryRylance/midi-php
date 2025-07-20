@@ -55,6 +55,15 @@ it('serializes C major triad with running status', function() {
 
     $track->writeBytes($stream);
 
-    test()->fail("Finish implementing me");
+    $actual = $stream->toBinary();
+
+    // NB: Slice off MTrk and chunk size
+    $actual = substr($actual, 8);
+
+    $expected = EventByteArrays::toBinary(EventByteArrays::RUNNING_C_MAJOR_TRIAD);
+
+    
+
+    expect($actual)->toBe($expected);
 
 });
