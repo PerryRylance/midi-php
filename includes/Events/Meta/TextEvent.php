@@ -25,19 +25,19 @@ class TextEvent extends MetaEvent
         return MetaEventType::TEXT;
     }
 
-    protected function setText(string $value)
+    protected function setText(string $value, bool $strictAscii = true)
     {
-        $this->assertValidText($value);
+        $this->assertValidText($value, $strictAscii);
 
         $this->_text = $value;
     }
 
-    protected function assertValidText(string $value): void
+    protected function assertValidText(string $value, bool $strictAscii = true): void
     {
         if(strlen($value) > 255)
             throw new OverflowException('Text too long');
 
-        if(preg_match('/[^\x00-\x7F]/', $value))
+        if($strictAscii && preg_match('/[^\x00-\x7F]/', $value))
             throw new InvalidArgumentException('One or more characters are not valid ASCII');
     }
 
@@ -49,6 +49,9 @@ class TextEvent extends MetaEvent
         for($i = 0; $i < $length; $i++)
             $buffer .= chr($stream->readByte());
 
-        $this->text = $buffer;
+        // NB: Non-ASCII characters should be supported / ignored during read operations - but we should warn or suppress on write. See https://www.lim.di.unimi.it/IEEE/MIDI/META.HTM?utm_source=chatgpt.com#01-
+        $this->setText($buffer, false);
     }
+    
+    // TODO: Strict ASCII mode whne writing
 }
