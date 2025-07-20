@@ -27,7 +27,7 @@ class TextEvent extends MetaEvent
         return MetaEventType::TEXT;
     }
 
-    protected function setText(string $value, bool $strictAscii = true)
+    public function setText(string $value, bool $strictAscii = true)
     {
         $this->assertValidText($value, $strictAscii);
 
