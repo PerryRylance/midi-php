@@ -4,7 +4,10 @@ namespace Tests\Unit;
 
 use PerryRylance\Midi\Events\Control\NoteOnEvent;
 use PerryRylance\Midi\Events\Factories\EventFactory;
+use PerryRylance\Midi\Events\Meta\EndOfTrackEvent;
 use PerryRylance\Midi\Streams\StatusBytes;
+use PerryRylance\Midi\Streams\WriteStream;
+use PerryRylance\Midi\Track;
 use Tests\EventByteArrays;
 
 it('parses C major triad with running status', function() {
@@ -34,6 +37,24 @@ it('parses C major triad with running status', function() {
 
 it('serializes C major triad with running status', function() {
 
-    test()->fail("Not yet implemented");
+    $track = new Track();
+    $stream = new WriteStream();
+
+    foreach([60, 64, 67] as $pitch)
+    {
+        $event = new NoteOnEvent();
+
+        $event->pitch = $pitch;
+        $event->velocity = 127;
+
+        $track->events []= $event;
+    }
+
+    // NB: End of track event, to pass validation. Running status is a concept of Track, so this makes sense to have in the test
+    $track->events []= new EndOfTrackEvent();
+
+    $track->writeBytes($stream);
+
+    test()->fail("Finish implementing me");
 
 });

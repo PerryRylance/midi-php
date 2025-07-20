@@ -19,5 +19,8 @@
     },
     "scripts": {
         "test": "./vendor/bin/pest"
+    },
+    "require": {
+        "aeviiq/collection": "^4.0"
     }
 }
