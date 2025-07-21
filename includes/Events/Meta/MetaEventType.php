@@ -4,7 +4,7 @@ namespace PerryRylance\Midi\Events\Meta;
 
 enum MetaEventType : int
 {
-    case SEQUENCE_NUMBER	= 0x00;
+	case SEQUENCE_NUMBER	= 0x00;
 	case TEXT				= 0x01;
 	case COPYRIGHT			= 0x02;
 	case TRACK_NAME			= 0x03;

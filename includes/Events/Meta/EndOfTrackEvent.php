@@ -8,20 +8,20 @@ use PerryRylance\Midi\Streams\StatusBytes;
 
 class EndOfTrackEvent extends MetaEvent
 {
-    public function readBytes(ReadStream $stream): void
-    {
-        $stream->readByteAssertingValue(0);
-    }
+	public function readBytes(ReadStream $stream): void
+	{
+		$stream->readByteAssertingValue(0);
+	}
 
-    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
-    {
-        parent::writeBytes($stream, $status);
+	public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+	{
+		parent::writeBytes($stream, $status);
 
-        $stream->writeByte(0);
-    }
+		$stream->writeByte(0);
+	}
 
-    protected function getMetaType(): MetaEventType
-    {
-        return MetaEventType::END_OF_TRACK;
-    }
+	protected function getMetaType(): MetaEventType
+	{
+		return MetaEventType::END_OF_TRACK;
+	}
 }

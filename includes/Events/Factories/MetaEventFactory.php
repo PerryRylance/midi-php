@@ -25,33 +25,33 @@ use PerryRylance\Midi\Streams\ReadStream;
 
 class MetaEventFactory
 {
-    public static function fromStream(ReadStream $stream, int $delta): MetaEvent
-    {
-        $byte = $stream->readByte();
-        $type = MetaEventType::tryFrom($byte);
+	public static function fromStream(ReadStream $stream, int $delta): MetaEvent
+	{
+		$byte = $stream->readByte();
+		$type = MetaEventType::tryFrom($byte);
 
-        $result = match($type) {
-            MetaEventType::TEXT => new TextEvent($delta),
-            MetaEventType::COPYRIGHT => new CopyrightEvent($delta),
-            MetaEventType::TRACK_NAME => new TrackNameEvent($delta),
-            MetaEventType::INSTRUMENT_NAME => new InstrumentNameEvent($delta),
-            MetaEventType::LYRIC => new LyricEvent($delta),
-            MetaEventType::MARKER => new MarkerEvent($delta),
-            MetaEventType::CUE_POINT => new CuePointEvent($delta),
-            MetaEventType::SET_TEMPO => new SetTempoEvent($delta),
-            MetaEventType::SMPTE_OFFSET => new SmtpeOffsetEvent($delta),
-            MetaEventType::SEQUENCE_NUMBER => new SequenceNumberEvent($delta),
-            MetaEventType::END_OF_TRACK => new EndOfTrackEvent($delta),
-            MetaEventType::CHANNEL_PREFIX => new ChannelPrefixEvent($delta),
-            MetaEventType::PORT_PREFIX => new PortPrefixEvent($delta),
-            MetaEventType::KEY_SIGNATURE => new KeySignatureEvent($delta),
-            MetaEventType::TIME_SIGNATURE => new TimeSignatureEvent($delta),
-            MetaEventType::SEQUENCER_SPECIFIC => new SequencerSpecificEvent($delta),
-            default => throw new ParseException("Invalid meta event type 0x" . dechex($byte))
-        };
+		$result = match($type) {
+			MetaEventType::TEXT => new TextEvent($delta),
+			MetaEventType::COPYRIGHT => new CopyrightEvent($delta),
+			MetaEventType::TRACK_NAME => new TrackNameEvent($delta),
+			MetaEventType::INSTRUMENT_NAME => new InstrumentNameEvent($delta),
+			MetaEventType::LYRIC => new LyricEvent($delta),
+			MetaEventType::MARKER => new MarkerEvent($delta),
+			MetaEventType::CUE_POINT => new CuePointEvent($delta),
+			MetaEventType::SET_TEMPO => new SetTempoEvent($delta),
+			MetaEventType::SMPTE_OFFSET => new SmtpeOffsetEvent($delta),
+			MetaEventType::SEQUENCE_NUMBER => new SequenceNumberEvent($delta),
+			MetaEventType::END_OF_TRACK => new EndOfTrackEvent($delta),
+			MetaEventType::CHANNEL_PREFIX => new ChannelPrefixEvent($delta),
+			MetaEventType::PORT_PREFIX => new PortPrefixEvent($delta),
+			MetaEventType::KEY_SIGNATURE => new KeySignatureEvent($delta),
+			MetaEventType::TIME_SIGNATURE => new TimeSignatureEvent($delta),
+			MetaEventType::SEQUENCER_SPECIFIC => new SequencerSpecificEvent($delta),
+			default => throw new ParseException("Invalid meta event type 0x" . dechex($byte))
+		};
 
-        $result->readBytes($stream);
+		$result->readBytes($stream);
 
-        return $result;
-    }
+		return $result;
+	}
 }

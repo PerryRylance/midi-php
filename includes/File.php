@@ -10,82 +10,84 @@ use PerryRylance\Midi\Validators\FileValidator;
 
 class File
 {
-    const HEADER_CHUNK_ID = 0x4D546864;
+	const HEADER_CHUNK_ID = 0x4D546864;
 
-    public TrackCollection $tracks;
-    public FileType $type;
-    public Resolution $resolution;
+	public TrackCollection $tracks;
+	public FileType $type;
+	public Resolution $resolution;
 
-    public function __construct()
-    {
-        $this->tracks = new TrackCollection();
-        $this->type = FileType::TYPE_1;
-        $this->resolution = new Resolution();
-    }
+	public function __construct()
+	{
+		$this->tracks = new TrackCollection();
+		$this->type = FileType::TYPE_1;
+		$this->resolution = new Resolution();
+	}
 
-    private function readHeader(ReadStream $stream): int
-    {
-        $signature = $stream->readUint();
+	private function readHeader(ReadStream $stream): int
+	{
+		$signature = $stream->readUint();
 
-        if($signature !== File::HEADER_CHUNK_ID)
-            throw new ParseException("Expected MThd");
+		if ($signature !== File::HEADER_CHUNK_ID) {
+			throw new ParseException("Expected MThd");
+		}
 
-        $size = $stream->readUint();
+		$size = $stream->readUint();
 
-        if($size !== 6)
-            throw new ParseException('Expected header size to be 6');
+		if ($size !== 6) {
+			throw new ParseException('Expected header size to be 6');
+		}
 
-        $this->type = FileType::tryFrom($stream->readShort());
+		$this->type = FileType::tryFrom($stream->readShort());
 
-        if($this->type === null)
-            throw new ParseException('Invalid file type');
+		if ($this->type === null) {
+			throw new ParseException('Invalid file type');
+		}
 
-        $numTracks = $stream->readShort();
+		$numTracks = $stream->readShort();
 
-        $this->resolution->readBytes($stream);
+		$this->resolution->readBytes($stream);
 
-        return $numTracks;
-    }
+		return $numTracks;
+	}
 
-    public function readBytes(ReadStream $stream): void
-    {
-        $numTracks = $this->readHeader($stream);
+	public function readBytes(ReadStream $stream): void
+	{
+		$numTracks = $this->readHeader($stream);
 
-        $this->tracks = new TrackCollection();
+		$this->tracks = new TrackCollection();
 
-        for($i = 0; $i < $numTracks; $i++)
-        {
-            $track = new Track();
-            $track->readBytes($stream);
+		for ($i = 0; $i < $numTracks; $i++) {
+			$track = new Track();
+			$track->readBytes($stream);
 
-            $this->tracks->append($track);
-        }
+			$this->tracks->append($track);
+		}
 
-        if($stream->getPosition() < $stream->getLength())
-            throw new ParseException('Unexpected data after parsing file');
-    }
+		if ($stream->getPosition() < $stream->getLength()) {
+			throw new ParseException('Unexpected data after parsing file');
+		}
+	}
 
-    public function writeBytes(WriteStream $stream): void
-    {
-        $validator = new FileValidator($this);
+	public function writeBytes(WriteStream $stream): void
+	{
+		$validator = new FileValidator($this);
 
-        $stream->writeUint(File::HEADER_CHUNK_ID);
-        $stream->writeUint(0x6); // NB: Size of the following header
+		$stream->writeUint(File::HEADER_CHUNK_ID);
+		$stream->writeUint(0x6); // NB: Size of the following header
 
-        $validator->validateTrackCount();
+		$validator->validateTrackCount();
 
-        $stream->writeShort($this->type->value);
-        $stream->writeShort($this->tracks->count());
+		$stream->writeShort($this->type->value);
+		$stream->writeShort($this->tracks->count());
 
-        $this->resolution->writeBytes($stream);
+		$this->resolution->writeBytes($stream);
 
-        for($i = 0; $i < $this->tracks->count(); $i++)
-        {
-            $track = $this->tracks[$i];
+		for ($i = 0; $i < $this->tracks->count(); $i++) {
+			$track = $this->tracks[$i];
 
-            $validator->validateTrack($track, $i);
+			$validator->validateTrack($track, $i);
 
-            $track->writeBytes($stream);
-        }
-    }
+			$track->writeBytes($stream);
+		}
+	}
 }

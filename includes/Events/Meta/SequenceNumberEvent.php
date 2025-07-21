@@ -16,28 +16,28 @@ use PerryRylance\Midi\Traits\PropertyAccessors;
  */
 class SequenceNumberEvent extends MetaEvent
 {
-    #[Getter]
-    #[Setter(Type::SHORT)]
-    protected $_number = 0;
+	#[Getter]
+	#[Setter(Type::SHORT)]
+	protected $_number = 0;
 
-    public function readBytes(ReadStream $stream): void
-    {
-        $stream->readByteAssertingValue(2);
+	public function readBytes(ReadStream $stream): void
+	{
+		$stream->readByteAssertingValue(2);
 
-        $this->_number = $stream->readShort();
-    }
+		$this->_number = $stream->readShort();
+	}
 
-    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
-    {
-        parent::writeBytes($stream, $status);
+	public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+	{
+		parent::writeBytes($stream, $status);
 
-        $stream->writeByte(2);
+		$stream->writeByte(2);
 
-        $stream->writeShort($this->number);
-    }
+		$stream->writeShort($this->number);
+	}
 
-    protected function getMetaType(): MetaEventType
-    {
-        return MetaEventType::SEQUENCE_NUMBER;
-    }
+	protected function getMetaType(): MetaEventType
+	{
+		return MetaEventType::SEQUENCE_NUMBER;
+	}
 }

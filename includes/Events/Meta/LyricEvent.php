@@ -4,8 +4,8 @@ namespace PerryRylance\Midi\Events\Meta;
 
 class LyricEvent extends TextEvent
 {
-    protected function getMetaType(): MetaEventType
-    {
-        return MetaEventType::LYRIC;
-    }
+	protected function getMetaType(): MetaEventType
+	{
+		return MetaEventType::LYRIC;
+	}
 }

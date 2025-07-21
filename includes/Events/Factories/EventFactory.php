@@ -12,32 +12,31 @@ use PerryRylance\Midi\Streams\StatusBytes;
 
 class EventFactory
 {
-    /**
-     * @template TEvent of Event
-     * @param ReadStream $stream
-     * @param StatusBytes $status
-     * @return TEvent
-     */
-    public static function fromStream(ReadStream $stream, StatusBytes $status, ?int $delta = 0): Event
-    {
-        $type = $stream->readByte();
-        
-        switch($type)
-        {
-            case EventType::META->value:
-                $result = MetaEventFactory::fromStream($stream, $delta);
-                break;
+	/**
+	 * @template TEvent of Event
+	 * @param ReadStream $stream
+	 * @param StatusBytes $status
+	 * @return TEvent
+	 */
+	public static function fromStream(ReadStream $stream, StatusBytes $status, ?int $delta = 0): Event
+	{
+		$type = $stream->readByte();
+		
+		switch ($type) {
+			case EventType::META->value:
+				$result = MetaEventFactory::fromStream($stream, $delta);
+				break;
 
-            case EventType::SYSEX->value:
-                $result = new SysExEvent($delta);
-                $result->readBytes($stream);
-                break;
+			case EventType::SYSEX->value:
+				$result = new SysExEvent($delta);
+				$result->readBytes($stream);
+				break;
 
-            default:
-                $result = ControlEventFactory::fromStream($stream, $type, $delta, $status);
-                break;
-        }
+			default:
+				$result = ControlEventFactory::fromStream($stream, $type, $delta, $status);
+				break;
+		}
 
-        return $result;
-    }
+		return $result;
+	}
 }

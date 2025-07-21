@@ -9,11 +9,11 @@ use PerryRylance\Midi\Streams\StatusBytes;
 
 abstract class MetaEvent extends Event
 {
-    protected abstract function getMetaType(): MetaEventType;
+	abstract protected function getMetaType(): MetaEventType;
 
-    protected function writeType(WriteStream $stream, ?StatusBytes $status = null): void
-    {
-        $stream->writeByte(EventType::META->value);
-        $stream->writeByte($this->getMetaType()->value);
-    }
+	protected function writeType(WriteStream $stream, ?StatusBytes $status = null): void
+	{
+		$stream->writeByte(EventType::META->value);
+		$stream->writeByte($this->getMetaType()->value);
+	}
 }

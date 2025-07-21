@@ -15,35 +15,35 @@ use PerryRylance\Midi\Traits\PropertyAccessors;
  */
 class ChannelPrefixEvent extends MetaEvent
 {
-    #[Getter]
-    #[Setter]
-    protected int $_channel = 0;
+	#[Getter]
+	#[Setter]
+	protected int $_channel = 0;
 
-    public function readBytes(ReadStream $stream): void
-    {
-        $stream->readByteAssertingValue(1);
+	public function readBytes(ReadStream $stream): void
+	{
+		$stream->readByteAssertingValue(1);
 
-        $this->channel = $stream->readByte();
-    }
+		$this->channel = $stream->readByte();
+	}
 
-    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
-    {
-        parent::writeBytes($stream, $status);
+	public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+	{
+		parent::writeBytes($stream, $status);
 
-        $stream->writeByte(1);
+		$stream->writeByte(1);
 
-        $stream->writeByte($this->channel);
-    }
+		$stream->writeByte($this->channel);
+	}
 
-    protected function setChannel(int $value): void
-    {
-        $this->assertWithinRange($value, 0, 0xF);
+	protected function setChannel(int $value): void
+	{
+		$this->assertWithinRange($value, 0, 0xF);
 
-        $this->_channel = $value;
-    }
+		$this->_channel = $value;
+	}
 
-    protected function getMetaType(): MetaEventType
-    {
-        return MetaEventType::CHANNEL_PREFIX;
-    }
+	protected function getMetaType(): MetaEventType
+	{
+		return MetaEventType::CHANNEL_PREFIX;
+	}
 }

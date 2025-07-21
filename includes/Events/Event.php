@@ -12,31 +12,31 @@ use PerryRylance\Midi\Streams\WriteStream;
 
 abstract class Event
 {
-    use PropertyAccessors;
+	use PropertyAccessors;
 
-    #[Getter]
-    #[Setter]
-    protected int $_delta = 0;
+	#[Getter]
+	#[Setter]
+	protected int $_delta = 0;
 
-    public function __construct($delta = 0)
-    {
-        $this->setDelta($delta);
-    }
+	public function __construct($delta = 0)
+	{
+		$this->setDelta($delta);
+	}
 
-    abstract public function readBytes(ReadStream $stream): void;
+	abstract public function readBytes(ReadStream $stream): void;
 
-    protected abstract function writeType(WriteStream $stream, ?StatusBytes $status = null): void;
+	abstract protected function writeType(WriteStream $stream, ?StatusBytes $status = null): void;
 
-    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
-    {
-        $this->writeType($stream, $status);
-    }
+	public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+	{
+		$this->writeType($stream, $status);
+	}
 
-    protected function setDelta(mixed $value): void
-    {
-        $this->assertIsInt($value, 'Delta must be an integer');
-        $this->assertWithinRange($value, 0, 0x0FFFFFFF);
+	protected function setDelta(mixed $value): void
+	{
+		$this->assertIsInt($value, 'Delta must be an integer');
+		$this->assertWithinRange($value, 0, 0x0FFFFFFF);
 
-        $this->_delta = $value;
-    }
+		$this->_delta = $value;
+	}
 }

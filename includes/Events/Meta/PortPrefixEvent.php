@@ -11,28 +11,28 @@ use PerryRylance\Midi\Streams\StatusBytes;
 
 class PortPrefixEvent extends MetaEvent
 {
-    #[Getter]
-    #[Setter(Type::BYTE)]
-    protected int $_port = 0;
+	#[Getter]
+	#[Setter(Type::BYTE)]
+	protected int $_port = 0;
 
-    public function readBytes(ReadStream $stream): void
-    {
-        $stream->readByteAssertingValue(1);
+	public function readBytes(ReadStream $stream): void
+	{
+		$stream->readByteAssertingValue(1);
 
-        $this->_port = $stream->readByte();
-    }
+		$this->_port = $stream->readByte();
+	}
 
-    public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
-    {
-        parent::writeBytes($stream, $status);
-        
-        $stream->writeByte(1);
+	public function writeBytes(WriteStream $stream, ?StatusBytes $status = null): void
+	{
+		parent::writeBytes($stream, $status);
+		
+		$stream->writeByte(1);
 
-        $stream->writeByte($this->port);
-    }
+		$stream->writeByte($this->port);
+	}
 
-    protected function getMetaType(): MetaEventType
-    {
-        return MetaEventType::PORT_PREFIX;
-    }
+	protected function getMetaType(): MetaEventType
+	{
+		return MetaEventType::PORT_PREFIX;
+	}
 }

@@ -4,4 +4,6 @@ namespace PerryRylance\Midi\Exceptions;
 
 use Exception;
 
-class ParseException extends Exception {}
+class ParseException extends Exception
+{
+}

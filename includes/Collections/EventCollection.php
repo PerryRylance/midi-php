@@ -7,8 +7,8 @@ use PerryRylance\Midi\Events\Event;
 
 final class EventCollection extends ObjectCollection
 {
-    protected function allowedInstance(): string
-    {
-        return Event::class;
-    }
+	protected function allowedInstance(): string
+	{
+		return Event::class;
+	}
 }

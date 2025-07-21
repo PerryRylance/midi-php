@@ -2,4 +2,6 @@
 
 namespace PerryRylance\Midi\Exceptions;
 
-class UnsupportedTrackException extends ParseException {}
+class UnsupportedTrackException extends ParseException
+{
+}

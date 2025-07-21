@@ -8,17 +8,17 @@ use PerryRylance\Midi\Traits\AssertsPitch;
 
 abstract class PitchedEvent extends ControlEvent
 {
-    use AssertsPitch;
+	use AssertsPitch;
 
-    #[Getter]
-    #[Setter]
-    protected int $_pitch = 60;
+	#[Getter]
+	#[Setter]
+	protected int $_pitch = 60;
 
-    protected function setPitch(mixed $value): void
-    {
-        $this->assertIsInt($value);
-        $this->assertPitch($value);
+	protected function setPitch(mixed $value): void
+	{
+		$this->assertIsInt($value);
+		$this->assertPitch($value);
 
-        $this->_pitch = $value;
-    }
+		$this->_pitch = $value;
+	}
 }
