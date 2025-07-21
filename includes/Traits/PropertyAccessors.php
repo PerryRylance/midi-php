@@ -25,7 +25,7 @@ trait PropertyAccessors
         try{
             $property = $reflection->getProperty($property);
         }catch(ReflectionException $e) {
-            throw new PropertyException("Property $property is not defined on " . __CLASS__);
+            throw new PropertyException("Property $property is not defined on " . get_class($this));
         }
 
         $attributes = $property->getAttributes($attribute);
