@@ -12,3 +12,6 @@ A package for reading and writing MIDI files and streams in PHP.
 - Formatter
 - Make robust against misusing trait (eg private vars cause __)
 - MIDI visualizer (eg hex viewer with bits highlighted) would be amazing
+
+## Thanks
+- Thanks to Jeff Boudier for [MIDIopsy](https://github.com/jeffbourdier/MIDIopsy/releases/tag/v1.2)

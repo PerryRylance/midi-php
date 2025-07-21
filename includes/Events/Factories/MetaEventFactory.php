@@ -31,22 +31,22 @@ class MetaEventFactory
         $type = MetaEventType::tryFrom($byte);
 
         $result = match($type) {
-            MetaEventType::TEXT => new TextEvent,
-            MetaEventType::COPYRIGHT => new CopyrightEvent,
-            MetaEventType::TRACK_NAME => new TrackNameEvent,
-            MetaEventType::INSTRUMENT_NAME => new InstrumentNameEvent,
-            MetaEventType::LYRIC => new LyricEvent,
-            MetaEventType::MARKER => new MarkerEvent,
-            MetaEventType::CUE_POINT => new CuePointEvent,
-            MetaEventType::SET_TEMPO => new SetTempoEvent,
-            MetaEventType::SMPTE_OFFSET => new SmtpeOffsetEvent,
-            MetaEventType::SEQUENCE_NUMBER => new SequenceNumberEvent,
-            MetaEventType::END_OF_TRACK => new EndOfTrackEvent,
-            MetaEventType::CHANNEL_PREFIX => new ChannelPrefixEvent,
-            MetaEventType::PORT_PREFIX => new PortPrefixEvent,
-            MetaEventType::KEY_SIGNATURE => new KeySignatureEvent,
-            MetaEventType::TIME_SIGNATURE => new TimeSignatureEvent,
-            MetaEventType::SEQUENCER_SPECIFIC => new SequencerSpecificEvent,
+            MetaEventType::TEXT => new TextEvent($delta),
+            MetaEventType::COPYRIGHT => new CopyrightEvent($delta),
+            MetaEventType::TRACK_NAME => new TrackNameEvent($delta),
+            MetaEventType::INSTRUMENT_NAME => new InstrumentNameEvent($delta),
+            MetaEventType::LYRIC => new LyricEvent($delta),
+            MetaEventType::MARKER => new MarkerEvent($delta),
+            MetaEventType::CUE_POINT => new CuePointEvent($delta),
+            MetaEventType::SET_TEMPO => new SetTempoEvent($delta),
+            MetaEventType::SMPTE_OFFSET => new SmtpeOffsetEvent($delta),
+            MetaEventType::SEQUENCE_NUMBER => new SequenceNumberEvent($delta),
+            MetaEventType::END_OF_TRACK => new EndOfTrackEvent($delta),
+            MetaEventType::CHANNEL_PREFIX => new ChannelPrefixEvent($delta),
+            MetaEventType::PORT_PREFIX => new PortPrefixEvent($delta),
+            MetaEventType::KEY_SIGNATURE => new KeySignatureEvent($delta),
+            MetaEventType::TIME_SIGNATURE => new TimeSignatureEvent($delta),
+            MetaEventType::SEQUENCER_SPECIFIC => new SequencerSpecificEvent($delta),
             default => throw new ParseException("Invalid meta event type 0x" . dechex($byte))
         };
 
