@@ -27,12 +27,6 @@ A package for reading and writing MIDI files and streams in PHP.
 - `docker compose up`
 - `docker exec -t php84 composer test` (replacing `php84` with whichever version you wish to target)
 
-## TODO
-- PHPStan
-- Formatter
-- Make robust against misusing trait (eg private vars cause __)
-- MIDI visualizer (eg hex viewer with bits highlighted) would be amazing
-
 ## Credits
 - With thanks to [Recording Blogs](https://www.recordingblogs.com/wiki/musical-instrument-digital-interface-midi), [Teragon Audio](http://midi.teragonaudio.com/tech/midispec/run.htm) and [Mido](https://mido.readthedocs.io/en/latest/meta_message_types.html) for insight into the MIDI spec.
 - With thanks to [jazz-soft](https://github.com/jazz-soft/test-midi-files) for the test files.

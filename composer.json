@@ -17,7 +17,9 @@
     "minimum-stability": "stable",
     "require-dev": {
         "pestphp/pest": "^3.8",
-        "illuminate/support": "^12.20"
+        "illuminate/support": "^12.20",
+        "phpstan/phpstan": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.84"
     },
     "autoload": {
         "psr-4": {
@@ -35,7 +37,9 @@
         }
     },
     "scripts": {
-        "test": "./vendor/bin/pest"
+        "test": "./vendor/bin/pest",
+        "lint": "./vendor/bin/phpstan analyse includes --memory-limit=256M",
+        "format": "./vendor/bin/php-cs-fixer fix includes --config=./.php-cs-fixer.php"
     },
     "require": {
         "php": ">=8.0.0",
