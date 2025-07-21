@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use PerryRylance\Midi\Events\Meta\EndOfTrackEvent;
 use PerryRylance\Midi\Streams\WriteStream;

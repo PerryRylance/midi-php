@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature;
+
 use Illuminate\Support\Str;
 use PerryRylance\Midi\Events\Control\NoteOnEvent;
 use PerryRylance\Midi\Events\Meta\CopyrightEvent;
@@ -11,6 +13,7 @@ use PerryRylance\Midi\File;
 use PerryRylance\Midi\FileType;
 use PerryRylance\Midi\Streams\WriteStream;
 use PerryRylance\Midi\Track;
+use ReflectionClass;
 
 function getCMajorEvents(): array
 {

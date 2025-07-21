@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use PerryRylance\Midi\Events\Control\NoteOnEvent;
 use PerryRylance\Midi\Events\Factories\EventFactory;

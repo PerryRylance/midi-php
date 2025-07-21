@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature;
+
 use PerryRylance\Midi\Events\Control\AftertouchEvent;
 use PerryRylance\Midi\Events\Control\ChannelAftertouchEvent;
 use PerryRylance\Midi\Events\Control\ControllerEvent;
@@ -29,7 +31,6 @@ use PerryRylance\Midi\Events\Meta\SequenceNumberEvent;
 use PerryRylance\Midi\Events\Meta\SequencerSpecificEvent;
 use PerryRylance\Midi\Events\Meta\TimeSignatureEvent;
 use PerryRylance\Midi\Events\SysEx\SysExEvent;
-use PerryRylance\Midi\Streams\ReadStream;
 use Tests\EventByteArrays;
 
 it('serializes text event', function() {

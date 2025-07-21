@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use BadMethodCallException;
 use OutOfRangeException;
 use PerryRylance\Midi\Streams\StatusBytes;
-use RangeException;
 
 it('is initially zeroed', function() {
 

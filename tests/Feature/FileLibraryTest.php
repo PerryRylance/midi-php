@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Exceptions\UnsupportedTrackException;
