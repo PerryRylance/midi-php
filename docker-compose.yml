@@ -7,3 +7,19 @@ services:
         PHP_VERSION: '8.4'
     volumes:
       - .:/app
+  php83:
+    container_name: php83
+    build:
+      context: .
+      args:
+        PHP_VERSION: '8.3'
+    volumes:
+      - .:/app
+  php82:
+    container_name: php82
+    build:
+      context: .
+      args:
+        PHP_VERSION: '8.2'
+    volumes:
+      - .:/app

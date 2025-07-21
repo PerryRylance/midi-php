@@ -42,7 +42,7 @@
         "format": "./vendor/bin/php-cs-fixer fix includes --config=./.php-cs-fixer.php"
     },
     "require": {
-        "php": ">=8.0.0",
+        "php": ">=8.2.0",
         "aeviiq/collection": "^4.0"
     }
 }
