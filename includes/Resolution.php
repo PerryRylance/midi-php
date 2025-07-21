@@ -7,8 +7,10 @@ use OutOfRangeException;
 use PerryRylance\Midi\Attributes\Property;
 use PerryRylance\Midi\Events\Meta\FrameRate;
 use PerryRylance\Midi\Exceptions\ResolutionException;
+use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Streams\WriteStream;
 use PerryRylance\Midi\Traits\PropertyAccessors;
+use UnexpectedValueException;
 
 /**
  * @property ResolutionUnits $units
@@ -21,6 +23,18 @@ class Resolution
     use PropertyAccessors;
 
     private int $_value = 480;
+
+    public function readBytes(ReadStream $stream): void
+    {
+        $value = $stream->readShort();
+
+        if((0x8000 & $value) === 0x8000)
+            $this->assertValidFrameRateFromShort($value);
+
+        // TODO: Should there not be more checks here?
+
+        $this->_value = $value;
+    }
 
     public function writeBytes(WriteStream $stream): void
     {
@@ -81,12 +95,7 @@ class Resolution
         if($this->units !== ResolutionUnits::FPS)
             throw new ResolutionException();
 
-        $result = FrameRate::tryFrom( ($this->_value & 0x7FFF) >> 8 );
-
-        if(!$result)
-            throw new LogicException('Unexpected state');
-
-        return $result;
+        return $this->getFrameRateFromShort($this->_value);
     }
 
     #[Property('framesPerSecond')]
@@ -104,5 +113,20 @@ class Resolution
         $this->assertWithinRange($ticksPerFrame, 1, 0xFF);
 
         $this->_value = 0x8000 | (0x7F00 & ($frameRate->value << 8)) | $ticksPerFrame;
+    }
+
+    private function assertValidFrameRateFromShort(int $value): void
+    {
+        if(FrameRate::tryFrom(($value & 0x7FFF) >> 8) !== null)
+            return;
+
+        throw new UnexpectedValueException();
+    }
+
+    private function getFrameRateFromShort(int $value): FrameRate
+    {
+        $this->assertValidFrameRateFromShort($value);
+
+        return FrameRate::tryFrom(($value & 0x7FFF) >> 8);
     }
 }

@@ -47,7 +47,7 @@ it('reads a vlv', function() {
 
     $buffer = "\x82\x80\x00";
     $stream = new ReadStream($buffer);
-    $readback = $stream->readVLV();
+    $readback = $stream->readVlv();
 
     expect($readback)->toBe(32768);
 

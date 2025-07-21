@@ -2,6 +2,7 @@
 
 namespace PerryRylance\Midi\Validators;
 
+use PerryRylance\Midi\Collections\TrackCollection;
 use PerryRylance\Midi\Events\Event;
 use PerryRylance\Midi\Events\Meta\CopyrightEvent;
 use PerryRylance\Midi\Exceptions\ValidationException;
@@ -21,7 +22,7 @@ class FileValidator
         if($this->file->type === FileType::TYPE_0 && $this->file->tracks->count() > 1)
             throw new ValidationException("MIDI type 0 must have exactly one track");
 
-        if($this->file->tracks->count() > 0xFFFF)
+        if($this->file->tracks->count() > TrackCollection::MAX_COUNT)
             throw new ValidationException("Maximum number of tracks exceeded");
     }
 

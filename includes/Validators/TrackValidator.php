@@ -24,6 +24,12 @@ class TrackValidator
                 throw new ValidationException('Event must have zero delta time and cannot occur after non-zero delta time events');
     }
 
+    public function assertValidSize(int $size): void
+    {
+        if($size > 0xFFFFFFFF)
+            throw new ValidationException('Invalid track size');
+    }
+
     public function validateEvent(Event $event, int $index): void
     {
         if($event instanceof EndOfTrackEvent && $index !== $this->track->events->count() - 1)

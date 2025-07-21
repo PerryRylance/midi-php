@@ -60,3 +60,71 @@ it('writes a vlv', function() {
     expect($readback)->toBe(0x828000);
 
 });
+
+it('writes byte after seeking back', function() {
+
+    $stream = new WriteStream();
+
+    $stream->writeUint(0x0);
+    $stream->seekTo(0);
+    $stream->writeByte(0xFF);
+
+    $binary = $stream->toBinary();
+
+    expect($binary)->toBe("\xFF\x00\x00\x00");
+
+});
+
+it('writes signed byte after seeking back', function() {
+
+    $stream = new WriteStream();
+
+    $stream->writeUint(0x0);
+    $stream->seekTo(0);
+    $stream->writeSignedByte(-1);
+
+    $binary = $stream->toBinary();
+
+    expect($binary)->toBe("\xFF\x00\x00\x00");
+
+});
+
+it('writes short after seeking back', function() {
+
+    $stream = new WriteStream();
+
+    $stream->writeUint(0x0);
+    $stream->seekTo(0x1);
+    $stream->writeShort(0xFFFF);
+
+    $binary = $stream->toBinary();
+
+    expect($binary)->toBe("\x00\xFF\xFF\x00");
+
+});
+
+it('writes uint after seeking back', function() {
+
+    $stream = new WriteStream();
+
+    $stream->writeUint(0x0);
+    $stream->writeUint(0x0);
+
+    $stream->seekTo(0x2);
+    $stream->writeUint(0x12345678);
+
+    $binary = $stream->toBinary();
+
+    expect($binary)->toBe("\x00\x00\x12\x34\x56\x78\x00\x00");
+
+});
+
+it('throws seeking beyond end', function() {
+
+    $stream = new WriteStream();
+
+    $stream->writeUint(0x0);
+    $stream->seekTo(0x5);
+
+})
+    ->throws(OutOfRangeException::class);

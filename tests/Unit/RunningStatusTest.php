@@ -16,7 +16,7 @@ it('parses C major triad with running status', function() {
     $status = new StatusBytes;
 
     /** @var NoteOnEvent $c */
-    [$c, $e, $g] = array_map(fn() => EventFactory::fromStream($stream, $status, $stream->readVLV()), [0, 1, 2]);
+    [$c, $e, $g] = array_map(fn() => EventFactory::fromStream($stream, $status, $stream->readVlv()), [0, 1, 2]);
 
     expect($c)->toBeInstanceOf(NoteOnEvent::class);
     expect($c->channel)->toBe(0);
@@ -56,13 +56,10 @@ it('serializes C major triad with running status', function() {
     $track->writeBytes($stream);
 
     $actual = $stream->toBinary();
+    $expected = EventByteArrays::toBinary(EventByteArrays::RUNNING_C_MAJOR_TRIAD);
 
     // NB: Slice off MTrk and chunk size
     $actual = substr($actual, 8);
-
-    $expected = EventByteArrays::toBinary(EventByteArrays::RUNNING_C_MAJOR_TRIAD);
-
-    
 
     expect($actual)->toBe($expected);
 

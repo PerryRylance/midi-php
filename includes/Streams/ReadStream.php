@@ -73,7 +73,7 @@ class ReadStream extends Stream
         return $this->unpackAndAdvance(Stream::FORMAT_UINT, 4);
     }
 
-    public function readVLV(): int
+    public function readVlv(): int
     {
         if(($value = $this->readByte()) & 0x80)
         {

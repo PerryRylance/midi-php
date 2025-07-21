@@ -11,3 +11,4 @@ A package for reading and writing MIDI files and streams in PHP.
 - PHPStan
 - Formatter
 - Make robust against misusing trait (eg private vars cause __)
+- MIDI visualizer (eg hex viewer with bits highlighted) would be amazing

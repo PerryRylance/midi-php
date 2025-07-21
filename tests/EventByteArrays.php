@@ -47,6 +47,12 @@ class EventByteArrays
 		return pack('C*', ...$bytes);
 	}
 
+	public static function toHexArray(array $bytes): array
+	{
+		return array_map(fn(int $value) => sprintf("0x%02X", $value), $bytes);
+	}
+	
+
 	public static function toReadStream(array $bytes): ReadStream
 	{
 		$binary = static::toBinary($bytes);

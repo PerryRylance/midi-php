@@ -10,39 +10,38 @@ class WriteStream extends Stream
 
     private string $buffer = "";
 
+    private function writeBytes(string $packed): void
+    {
+        $length = strlen($packed);
+        
+        for($i = 0; $i < $length; $i++)
+            $this->buffer[$this->position++] = $packed[$i];
+    }
+
     public function writeByte(int $value): void
     {
         $this->assertByte($value);
-
-        $this->buffer .= pack(Stream::FORMAT_BYTE, $value);
-        $this->position++; // TODO: Is this even necessary?
+        $this->writeBytes(pack(Stream::FORMAT_BYTE, $value));
     }
 
     public function writeSignedByte(int $value): void
     {
         $this->assertWithinRange($value, -128, 128);
-
-        $this->buffer .= pack(Stream::FORMAT_SIGNED_BYTE, $value);
-        $this->position++;
+        $this->writeBytes(pack(Stream::FORMAT_SIGNED_BYTE, $value));
     }
 
     public function writeShort(int $value): void
     {
         $this->assertShort($value);
-
-        $this->buffer .= pack(Stream::FORMAT_SHORT, $value);
-        $this->position += 2;
+        $this->writeBytes(pack(Stream::FORMAT_SHORT, $value));
     }
 
     public function writeUint(int $value): void
     {
         $this->assertUint($value);
-
-        $this->buffer .= pack(Stream::FORMAT_UINT, $value);
-        $this->position += 4;
+        $this->writeBytes(pack(Stream::FORMAT_UINT, $value));
     }
 
-    // TODO: Match this case (Vlv) everywhere
     public function writeVlv(int $value): void
     {
         $buffer = $value & 0x7F;
@@ -65,8 +64,26 @@ class WriteStream extends Stream
         }
     }
 
+    public function seekTo(mixed $position): void
+    {
+        $this->assertIsInt($position);
+        $this->assertWithinRange($position, 0, strlen($this->buffer));
+
+        $this->position = $position;
+    }
+
     public function toBinary(): string
     {
         return $this->buffer;
+    }
+
+    public function toArray(): array
+    {
+        return array_values(unpack('C*', $this->buffer));
+    }
+
+    public function toHexArray(): array
+    {
+        return array_map(fn(int $value) => sprintf("0x%02X", $value), $this->toArray());
     }
 }
