@@ -1,4 +1,20 @@
 {
+    "name": "perry-rylance/midi-php",
+    "description": "Read, build and write MIDI files, tracks and events in PHP",
+    "authors": [
+        {
+            "name": "Perry Rylance",
+            "email": "contact@perryrylance.dev",
+            "homepage": "https://perryrylance.dev",
+            "role": "Developer"
+        }
+    ],
+    "type": "library",
+    "keywords": ["MIDI"],
+    "homepage": "https://github.com/PerryRylance/midi-php",
+    "license": "MIT",
+    "version": "1.0.0",
+    "minimum-stability": "stable",
     "require-dev": {
         "pestphp/pest": "^3.8",
         "illuminate/support": "^12.20"
@@ -22,6 +38,7 @@
         "test": "./vendor/bin/pest"
     },
     "require": {
+        "php": ">=8.0.0",
         "aeviiq/collection": "^4.0"
     }
 }
