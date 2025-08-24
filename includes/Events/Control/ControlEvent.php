@@ -9,6 +9,9 @@ use PerryRylance\Midi\Attributes\Setter;
 use PerryRylance\Midi\Streams\StatusBytes;
 use PerryRylance\Midi\Streams\WriteStream;
 
+/**
+ * @property int $channel
+ */
 abstract class ControlEvent extends Event
 {
 	#[Getter]

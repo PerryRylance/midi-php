@@ -68,7 +68,7 @@ class File
 		}
 	}
 
-	public function writeBytes(WriteStream $stream): void
+	public function writeBytes(WriteStream $stream, int $trackSerializationOptions = TrackSerializationOptions::AUTOMATIC_END_OF_TRACK): void
 	{
 		$validator = new FileValidator($this);
 
@@ -83,11 +83,12 @@ class File
 		$this->resolution->writeBytes($stream);
 
 		for ($i = 0; $i < $this->tracks->count(); $i++) {
+			/** @var Track $track */
 			$track = $this->tracks[$i];
 
 			$validator->validateTrack($track, $i);
 
-			$track->writeBytes($stream);
+			$track->writeBytes($stream, $trackSerializationOptions);
 		}
 	}
 }

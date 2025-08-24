@@ -8,6 +8,7 @@ use PerryRylance\Midi\Events\Control\ControlEvent;
 use PerryRylance\Midi\Events\Event;
 use PerryRylance\Midi\Events\Factories\EventFactory;
 use PerryRylance\Midi\Events\Meta\EndOfTrackEvent;
+use PerryRylance\Midi\Exceptions\MissingEndOfTrackException;
 use PerryRylance\Midi\Exceptions\ParseException;
 use PerryRylance\Midi\Exceptions\UnsupportedTrackException;
 use PerryRylance\Midi\Streams\ReadStream;
@@ -74,7 +75,7 @@ class Track
 		}
 	}
 
-	public function writeBytes(WriteStream $stream): void
+	public function writeBytes(WriteStream $stream, ?int $options = 0): void
 	{
 		$validator = new TrackValidator($this);
 
@@ -89,7 +90,15 @@ class Track
 		for ($i = 0; $i < $this->events->count(); $i++) {
 			$event = $this->events[$i];
 
-			$validator->validateEvent($event, $i);
+			if($options & TrackSerializationOptions::AUTOMATIC_END_OF_TRACK && $event instanceof EndOfTrackEvent)
+				continue;
+
+			try{
+				$validator->validateEvent($event, $i);
+			}catch(MissingEndOfTrackException $e) {
+				if(!($options & TrackSerializationOptions::AUTOMATIC_END_OF_TRACK))
+					throw $e;
+			}
 
 			// NB: Delta written here. Delta is a track concept and not related to pure events. We do this here so that events can be streamed in real time.
 			$stream->writeVlv($event->delta);
@@ -99,6 +108,13 @@ class Track
 			if (!($event instanceof ControlEvent)) {
 				$status[0] = $status[1] = 0;
 			} // NB: Reset status bytes
+		}
+
+		if($options & TrackSerializationOptions::AUTOMATIC_END_OF_TRACK)
+		{
+			$stream->writeVlv(0);
+
+			(new EndOfTrackEvent())->writeBytes($stream);
 		}
 
 		$trackEndPosition = $stream->getPosition();

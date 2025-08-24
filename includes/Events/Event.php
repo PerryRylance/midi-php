@@ -10,6 +10,9 @@ use PerryRylance\Midi\Attributes\Setter;
 use PerryRylance\Midi\Streams\StatusBytes;
 use PerryRylance\Midi\Streams\WriteStream;
 
+/**
+ * @property int $delta
+ */
 abstract class Event
 {
 	use PropertyAccessors;

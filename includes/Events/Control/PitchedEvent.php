@@ -6,6 +6,9 @@ use PerryRylance\Midi\Attributes\Getter;
 use PerryRylance\Midi\Attributes\Setter;
 use PerryRylance\Midi\Traits\AssertsPitch;
 
+/**
+ * @property int $pitch
+ */
 abstract class PitchedEvent extends ControlEvent
 {
 	use AssertsPitch;

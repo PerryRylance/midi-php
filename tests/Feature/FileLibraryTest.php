@@ -13,7 +13,7 @@ use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Streams\WriteStream;
 use Illuminate\Support\Str;
 
-foreach(glob('./tests/Assets/*.mid') as $path)
+foreach(glob('./tests/Fixtures/*.mid') as $path)
 {
     if(preg_match('/illegal|corrupt/', $path))
         $expectation = ParseException::class;

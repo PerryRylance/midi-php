@@ -1,3 +1,4 @@
 vendor
 tests.output
 ./php-cs-fixer.cache
+examples/output/*.mid

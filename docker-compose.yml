@@ -5,6 +5,20 @@ services:
       context: .
       args:
         PHP_VERSION: '8.4'
+        DEV_MODE: 0
+    environment:
+      DEV_MODE: 0
+    volumes:
+      - .:/app
+  php84-dev:
+    container_name: php84-dev
+    build:
+      context: .
+      args:
+        PHP_VERSION: '8.4'
+        DEV_MODE: 1
+    environment:
+      DEV_MODE: 1
     volumes:
       - .:/app
   php83:
@@ -13,6 +27,20 @@ services:
       context: .
       args:
         PHP_VERSION: '8.3'
+        DEV_MODE: 0
+    environment:
+      DEV_MODE: 0
+    volumes:
+      - .:/app
+  php83-dev:
+    container_name: php83-dev
+    build:
+      context: .
+      args:
+        PHP_VERSION: '8.3'
+        DEV_MODE: 1
+    environment:
+      DEV_MODE: 1
     volumes:
       - .:/app
   php82:
@@ -21,5 +49,19 @@ services:
       context: .
       args:
         PHP_VERSION: '8.2'
+        DEV_MODE: 0
+    environment:
+      DEV_MODE: 0
+    volumes:
+      - .:/app
+  php82-dev:
+    container_name: php82-dev
+    build:
+      context: .
+      args:
+        PHP_VERSION: '8.2'
+        DEV_MODE: 1
+    environment:
+      DEV_MODE: 1
     volumes:
       - .:/app

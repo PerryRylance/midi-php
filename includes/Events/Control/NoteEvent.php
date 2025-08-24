@@ -9,6 +9,9 @@ use PerryRylance\Midi\Streams\ReadStream;
 use PerryRylance\Midi\Streams\WriteStream;
 use PerryRylance\Midi\Streams\StatusBytes;
 
+/**
+ * @property int $velocity
+ */
 abstract class NoteEvent extends PitchedEvent
 {
 	use AssertsVelocityLike;

@@ -28,6 +28,7 @@ class FileValidator
 		}
 	}
 
+	// TODO: Bit misleading as we have a track validator, should this validateCopyrightEvent instead?
 	public function validateTrack(Track $track, int $index): void
 	{
 		if ($index === 0) {
