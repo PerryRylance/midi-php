@@ -29,4 +29,4 @@ COPY . /app
 
 RUN composer install --dev
 
-CMD ["composer", "run", "tests"]
+CMD ["composer", "run", "test"]
