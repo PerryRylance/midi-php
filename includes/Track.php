@@ -81,6 +81,7 @@ class Track
 
 		$stream->writeUint(Track::HEADER_CHUNK_ID);
 
+		$wroteEndOfTrack = false;
 		$chunkSizePosition = $stream->getPosition();
 
 		$stream->writeUint(0); // NB: Temporarily write zero for chunk size, we'll alter this later
@@ -90,8 +91,10 @@ class Track
 		for ($i = 0; $i < $this->events->count(); $i++) {
 			$event = $this->events[$i];
 
-			if($options & TrackSerializationOptions::AUTOMATIC_END_OF_TRACK && $event instanceof EndOfTrackEvent)
-				continue;
+			if($event instanceof EndOfTrackEvent &&
+				$options & TrackSerializationOptions::AUTOMATIC_END_OF_TRACK && 
+				$i < $this->events->count() - 1)
+				continue; // TODO: Carry delta when replacing this? It'll just eat the delta right now
 
 			try{
 				$validator->validateEvent($event, $i);
@@ -108,13 +111,15 @@ class Track
 			if (!($event instanceof ControlEvent)) {
 				$status[0] = $status[1] = 0;
 			} // NB: Reset status bytes
+
+			if($event instanceof EndOfTrackEvent)
+				$wroteEndOfTrack = true;
 		}
 
-		if($options & TrackSerializationOptions::AUTOMATIC_END_OF_TRACK)
+		if($options & TrackSerializationOptions::AUTOMATIC_END_OF_TRACK && !$wroteEndOfTrack)
 		{
 			$stream->writeVlv(0);
-
-			(new EndOfTrackEvent())->writeBytes($stream);
+			(new EndOfTrackEvent())->writeBytes($stream, $status);
 		}
 
 		$trackEndPosition = $stream->getPosition();
