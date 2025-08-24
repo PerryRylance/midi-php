@@ -1,5 +1,22 @@
-docker compose up -d
+#!/bin/bash
+set -e
 
-docker exec -t php82 composer run test
-docker exec -t php83 composer run test
-docker exec -t php84 composer run test
+# Check if Docker is running
+if ! docker info >/dev/null 2>&1; then
+    echo "❌ Docker is not running. Please start Docker and try again."
+    exit 1
+fi
+
+# Detect php services dynamically from docker-compose
+services=$(docker compose config --services | grep '^php')
+
+if [ -z "$services" ]; then
+    echo "❌ No PHP services found in docker-compose.yml"
+    exit 1
+fi
+
+# Run tests for each PHP service in the foreground
+for service in $services; do
+    echo "🧪 Running tests in $service..."
+    docker compose up --build "$service"
+done
