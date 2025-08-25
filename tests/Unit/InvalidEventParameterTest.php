@@ -58,15 +58,6 @@ it('tests channel prefix channel too high throws range error', function () {
     $event->channel = 255;
 })->throws(OutOfRangeException::class);
 
-it('tests text events text cannot exceed length 255', function () use ($TEXT_EVENT_CLASSES) {
-    $tooLongText = str_repeat("a", 256);
-
-    foreach ($TEXT_EVENT_CLASSES as $class) {
-        $event = new $class();
-        $event->text = $tooLongText;
-    }
-})->throws(OverflowException::class);
-
 it('tests text events text cannot contain non-ASCII characters', function () {
     $event = new TextEvent();
     $event->text = "🦓";

@@ -64,7 +64,7 @@ class TextEvent extends MetaEvent
 
 		$length = strlen($this->_text);
 
-		$stream->writeByte($length);
+		$stream->writeVlv($length);
 
 		for ($i = 0; $i < $length; $i++) {
 			$stream->writeByte(ord($this->_text[$i]));

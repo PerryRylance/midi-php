@@ -47,7 +47,7 @@ class MetaEventFactory
 			MetaEventType::KEY_SIGNATURE => new KeySignatureEvent($delta),
 			MetaEventType::TIME_SIGNATURE => new TimeSignatureEvent($delta),
 			MetaEventType::SEQUENCER_SPECIFIC => new SequencerSpecificEvent($delta),
-			default => throw new ParseException("Invalid meta event type 0x" . dechex($byte))
+			default => throw new ParseException($stream, "Invalid meta event type 0x" . dechex($byte))
 		};
 
 		$result->readBytes($stream);

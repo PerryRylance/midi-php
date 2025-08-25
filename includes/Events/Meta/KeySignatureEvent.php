@@ -27,7 +27,7 @@ class KeySignatureEvent extends MetaEvent
 		$this->_quality = Quality::tryFrom($stream->readByte());
 
 		if ($this->_quality === null) {
-			throw new ParseException("Invalid quality in key signature event");
+			throw new ParseException($stream, "Invalid quality in key signature event");
 		}
 	}
 

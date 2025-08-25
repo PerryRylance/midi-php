@@ -274,3 +274,13 @@ it("reads pitch wheel event", function () {
     expect($event->channel)->toBe(3);
     expect($event->value)->toBe(0x1CD4);
 });
+
+it("reads text meta event with vlv length", function() {
+
+    /** @var TextEvent $event */
+    $event = getEventFromByteArray(EventByteArrays::LONG_TEXT);
+
+    expect($event)->toBeInstanceOf(TextEvent::class);
+    expect($event->text)->toBe("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a est eu elit pellentesque volutpat. In commodo odio vel justo dapibus, sed blandit orci convallis. Duis tristique posuere ligula, sit amet volutpat augue. Integer blandit felis at magna consectetur gravida. Donec finibus sapien mi.");
+
+});

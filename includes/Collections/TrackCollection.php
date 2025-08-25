@@ -2,10 +2,9 @@
 
 namespace PerryRylance\Midi\Collections;
 
-use Aeviiq\Collection\ObjectCollection;
 use PerryRylance\Midi\Track;
 
-class TrackCollection extends ObjectCollection
+class TrackCollection extends Collection
 {
 	const MAX_COUNT = 0xFFFF;
 

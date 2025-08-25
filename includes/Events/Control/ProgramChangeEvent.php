@@ -17,7 +17,7 @@ class ProgramChangeEvent extends ControlEvent
 		$program = ProgramType::tryFrom($byte);
 
 		if ($program === null) {
-			throw new ParseException('Invalid program type 0x' . dechex($byte));
+			throw new ParseException($stream, 'Invalid program type 0x' . dechex($byte));
 		}
 
 		$this->program = $program;

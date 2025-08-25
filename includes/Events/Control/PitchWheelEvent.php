@@ -21,7 +21,7 @@ class PitchWheelEvent extends ControlEvent
 		$second = $stream->readByte();
 
 		if ($first & 0x80) {
-			throw new ParseException("Expected first bit of first byte to be zero");
+			throw new ParseException($stream, "Expected first bit of first byte to be zero");
 		}
 
 		$this->_value = (($second & 0x7F) << 7) | ($first & 0x7F);

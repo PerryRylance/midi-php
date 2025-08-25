@@ -42,6 +42,15 @@ it('serializes text event', function() {
 
 });
 
+it('serializes long text event with vlv', function() {
+
+    $event = new TextEvent();
+    $event->text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a est eu elit pellentesque volutpat. In commodo odio vel justo dapibus, sed blandit orci convallis. Duis tristique posuere ligula, sit amet volutpat augue. Integer blandit felis at magna consectetur gravida. Donec finibus sapien mi.";
+
+    expect($event)->toMatchByteArrayWhenSerialized(EventByteArrays::LONG_TEXT);
+
+});
+
 it('serializes copyright event', function() {
 
     $event = new CopyrightEvent();

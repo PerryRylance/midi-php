@@ -28,7 +28,7 @@ class SequencerSpecificEvent extends MetaEvent
 		$manufacturer = DeviceManufacturer::tryFrom($stream->readByte());
 
 		if ($manufacturer === null) {
-			throw new ParseException('Invalid manufacturer');
+			throw new ParseException($stream, 'Invalid manufacturer');
 		}
 
 		$this->_manufacturer = $manufacturer;

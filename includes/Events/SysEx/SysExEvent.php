@@ -29,7 +29,7 @@ class SysExEvent extends Event
 		if (($manufacturer = DeviceManufacturer::tryFrom($byte)) || ($manufacturer = UniversalDevices::tryFrom($byte))) {
 			$this->_manufacturer = $manufacturer;
 		} else {
-			throw new ParseException("Invalid manufacturer");
+			throw new ParseException($stream, "Invalid manufacturer");
 		}
 
 		$this->_bytes = "";

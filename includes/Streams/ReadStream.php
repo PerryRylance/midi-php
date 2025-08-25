@@ -27,7 +27,7 @@ class ReadStream extends Stream
 		}
 
 		if ($this->position >= $this->getLength() - $offset) {
-			throw new ParseException("Unexpected end of stream");
+			throw new ParseException($this, "Unexpected end of stream");
 		}
 	}
 
@@ -40,7 +40,7 @@ class ReadStream extends Stream
 		$array = unpack($format, $part);
 
 		if (empty($array)) {
-			throw new ParseException("Failed to unpack $size bytes with format $format");
+			throw new ParseException($this, "Failed to unpack $size bytes with format $format");
 		}
 
 		$this->position += $size;

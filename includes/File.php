@@ -28,19 +28,19 @@ class File
 		$signature = $stream->readUint();
 
 		if ($signature !== File::HEADER_CHUNK_ID) {
-			throw new ParseException("Expected MThd");
+			throw new ParseException($stream, "Expected MThd");
 		}
 
 		$size = $stream->readUint();
 
 		if ($size !== 6) {
-			throw new ParseException('Expected header size to be 6');
+			throw new ParseException($stream, 'Expected header size to be 6');
 		}
 
 		$this->type = FileType::tryFrom($stream->readShort());
 
 		if ($this->type === null) {
-			throw new ParseException('Invalid file type');
+			throw new ParseException($stream, 'Invalid file type');
 		}
 
 		$numTracks = $stream->readShort();
