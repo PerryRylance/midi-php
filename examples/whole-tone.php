@@ -14,7 +14,7 @@ use PerryRylance\Midi\Streams\WriteStream;
 
 require_once 'vendor/autoload.php';
 
-$binary = file_get_contents('examples/input/cascades.mid');
+$binary = file_get_contents('examples/input/PineappleRag.mid');
 
 $in = new ReadStream($binary);
 $out = new WriteStream();
@@ -32,6 +32,8 @@ $file->tracks->each(fn(Track $track) => $track->events->each(function(Event $eve
 
 }));
 
-$binary = $file->writeBytes($out);
+$file->writeBytes($out);
+
+$binary = $out->toBinary();
 
 file_put_contents('./examples/output/whole-tone.mid', $binary);
