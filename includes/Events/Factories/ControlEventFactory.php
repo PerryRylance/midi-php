@@ -61,7 +61,7 @@ class ControlEventFactory
 				break;
 
 			default:
-				throw new ParseException("Invalid control event type 0x" . dechex($type));
+				throw new ParseException($stream, "Invalid control event type 0x" . dechex($type));
 		}
 
 		$result->readBytes($stream);

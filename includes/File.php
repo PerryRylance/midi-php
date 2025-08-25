@@ -64,7 +64,7 @@ class File
 		}
 
 		if ($stream->getPosition() < $stream->getLength()) {
-			throw new ParseException('Unexpected data after parsing file');
+			throw new ParseException($stream, 'Unexpected data after parsing file');
 		}
 	}
 

@@ -30,7 +30,7 @@ class Track
 	public function readBytes(ReadStream $stream): void
 	{
 		if ($stream->readUint() !== Track::HEADER_CHUNK_ID) {
-			throw new UnsupportedTrackException('Expected MTrk, only MIDI trakcs are supported presently');
+			throw new UnsupportedTrackException($stream, 'Expected MTrk, only MIDI trakcs are supported presently');
 		}
 
 		$chunkSize = $stream->readUint();
@@ -44,7 +44,7 @@ class Track
 
 		while ($bytes < $chunkSize) {
 			if ($eot) {
-				throw new ParseException('Unexpected end of track event');
+				throw new ParseException($stream, 'Unexpected end of track event');
 			}
 
 			$cursor = $stream->getPosition();
@@ -67,11 +67,11 @@ class Track
 		}
 
 		if (!$eot) {
-			throw new ParseException('Expected end of track event');
+			throw new ParseException($stream, 'Expected end of track event');
 		}
 
 		if ($bytes < $chunkSize) {
-			throw new ParseException('Expected bytes read to be equal to specified chunk size');
+			throw new ParseException($stream, 'Expected bytes read to be equal to specified chunk size');
 		}
 	}
 

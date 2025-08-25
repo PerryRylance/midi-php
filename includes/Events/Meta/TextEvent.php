@@ -36,19 +36,19 @@ class TextEvent extends MetaEvent
 
 	protected function assertValidText(string $value, bool $strictAscii = true): void
 	{
-		if (strlen($value) > 255) {
-			throw new OverflowException('Text too long');
-		}
+		if(!$strictAscii)
+			return;
 
-		if ($strictAscii && preg_match('/[^\x00-\x7F]/', $value)) {
-			throw new InvalidArgumentException('One or more characters are not valid ASCII');
-		}
+		if (!preg_match('/[^\x00-\x7F]/', $value))
+			return;
+
+		throw new InvalidArgumentException('One or more characters are not valid ASCII');
 	}
 
 	public function readBytes(ReadStream $stream): void
 	{
 		$buffer = "";
-		$length = $stream->readByte();
+		$length = $stream->readVlv();
 
 		for ($i = 0; $i < $length; $i++) {
 			$buffer .= chr($stream->readByte());

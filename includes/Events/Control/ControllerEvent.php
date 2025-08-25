@@ -23,7 +23,7 @@ class ControllerEvent extends ControlEvent
 		$controller = ControllerType::tryFrom($byte);
 
 		if ($controller === null) {
-			throw new ParseException('Invalid controller type 0x' . dechex($byte));
+			throw new ParseException($stream, 'Invalid controller type 0x' . dechex($byte));
 		}
 
 		$this->controller = $controller;

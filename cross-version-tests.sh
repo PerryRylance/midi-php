@@ -8,7 +8,7 @@ if ! docker info >/dev/null 2>&1; then
 fi
 
 # Detect php services dynamically from docker-compose
-services=$(docker compose config --services | grep '^php')
+services=$(docker compose config --services | grep -E '^php[0-9]+$')
 
 if [ -z "$services" ]; then
     echo "❌ No PHP services found in docker-compose.yml"

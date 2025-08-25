@@ -21,11 +21,13 @@ A package for reading and writing MIDI files and streams in PHP.
 - Call `writeBytes` on your `File` passing in your `WriteStream`
 - Use `toBinary` on your `WriteStream` to get the binary data
 
-## Testing
-> TODO: Docs and script for run tests on all versions of PHP
+## Development
+`-dev` containers with XDebug are provided and will stay open once started.
 
-- `docker compose up`
-- `docker exec -t php84 composer test` (replacing `php84` with whichever version you wish to target)
+## Testing
+All tests can be run with `cross-version-tests.sh`.
+
+Tests can be run on specific versions by starting the respective containers.
 
 ## Credits
 - With thanks to [Recording Blogs](https://www.recordingblogs.com/wiki/musical-instrument-digital-interface-midi), [Teragon Audio](http://midi.teragonaudio.com/tech/midispec/run.htm) and [Mido](https://mido.readthedocs.io/en/latest/meta_message_types.html) for insight into the MIDI spec.
