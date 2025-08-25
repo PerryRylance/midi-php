@@ -4,7 +4,6 @@ namespace Tests;
 
 use PerryRylance\Midi\Streams\ReadStream;
 
-// TODO: Buffer strings
 class EventByteArrays
 {
     const TEXT =						[0xFF, 0x01, 0x04, 0x42, 0x61, 0x73, 0x73];

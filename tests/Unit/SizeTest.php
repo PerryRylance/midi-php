@@ -80,8 +80,6 @@ it('throws setting too large int', function() {
 })
     ->throws(OutOfRangeException::class);
 
-// TODO: Test on aliased property
-
 it('throws setting too large on aliased property', function() {
 
     $instance = new SizeTest();
